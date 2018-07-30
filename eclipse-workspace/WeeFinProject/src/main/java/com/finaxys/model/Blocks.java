@@ -1,7 +1,12 @@
-package model;
+package com.finaxys.model;
 
-public class Blocks {
+import java.io.Serializable;
 
+public class Blocks implements Serializable{
+	
+	
+	private static final long serialVersionUID = -6865429220065289280L;
+	
 	private long block_number;
 	private String block_hash;
 	private String block_parent_hash;

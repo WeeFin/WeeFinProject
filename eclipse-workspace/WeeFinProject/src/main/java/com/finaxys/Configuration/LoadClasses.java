@@ -1,4 +1,4 @@
-package Configuration;
+package com.finaxys.Configuration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.Blocks;
-import model.Erc20_Transfers;
-import model.Transactions;
+import com.finaxys.model.Blocks;
+import com.finaxys.model.Erc20_Transfers;
+import com.finaxys.model.Transactions;
 
 public class LoadClasses {
 

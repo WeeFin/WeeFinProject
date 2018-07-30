@@ -1,6 +1,10 @@
-package model;
+package com.finaxys.model;
 
-public class Transactions {
+import java.io.Serializable;
+
+public class Transactions implements Serializable {
+
+	private static final long serialVersionUID = -5400527372410444092L;
 
 	private String tx_hash;
 	private long tx_nonc;
@@ -14,7 +18,6 @@ public class Transactions {
 	private long tx_gas_price;
 	private String tx_input;
 
-	
 	public Transactions(String tx_hash, long tx_nonc, String tx_block_hash, long tx_block_number, long tx_index,
 			String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
 		super();

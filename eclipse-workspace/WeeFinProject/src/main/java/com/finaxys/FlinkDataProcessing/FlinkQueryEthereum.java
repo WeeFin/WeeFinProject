@@ -1,4 +1,4 @@
-package com.finaxys.WeeFinProject;
+package com.finaxys.FlinkDataProcessing;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
