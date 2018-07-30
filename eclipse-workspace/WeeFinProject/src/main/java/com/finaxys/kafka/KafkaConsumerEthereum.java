@@ -21,16 +21,17 @@ public class KafkaConsumerEthereum {
 		props.put("group.id", "test");
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
-		props.put("session.timeout.ms", "30000");
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 		props.put("value.deserializer", "com.finaxys.kafka.BlocksDeserializer");
 
 		try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
 			consumer.subscribe(Collections.singletonList(topicName));
 			while (true) {
+				System.out.println("Ici");
 				ConsumerRecords<String, Blocks> messages = consumer.poll(100);
+				System.out.println("Là");
 				for (ConsumerRecord<String, Blocks> message : messages) {
-					System.out.println("Message received " + message.value().toString());
+					System.out.println("Message received " + message.value().getBlock_number());
 				}
 			}
 		} catch (Exception e) {

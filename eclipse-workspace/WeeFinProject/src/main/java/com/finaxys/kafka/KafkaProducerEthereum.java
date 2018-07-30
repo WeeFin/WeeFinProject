@@ -24,15 +24,15 @@ public class KafkaProducerEthereum {
 
 		// create instance for properties to access producer configs
 		Properties props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "com.finaxys.kafka.BlocksSerializer");
-		props.put(ProducerConfig.RETRIES_CONFIG, "0");
-		props.put(ProducerConfig.ACKS_CONFIG, "all");
-		props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-		props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-		props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
-
+		props.put("bootstrap.servers", "localhost:9092");
+		props.put("acks", "all");
+		props.put("retries", 0);
+		props.put("batch.size", 16384);
+		props.put("linger.ms", 1);
+		props.put("buffer.memory", 33554432);
+		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		props.put("value.serializer", "com.finaxys.kafka.BlocksSerializer");
+		
 		LoadClasses loadCSVFiles = new LoadClasses("/home/finaxys/blocks.csv");
 
 		List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
@@ -40,7 +40,7 @@ public class KafkaProducerEthereum {
 		try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
 
 			producer.send(new ProducerRecord<String, Blocks>(topicName, blocks.get(0)));
-			System.out.println("Blocks "+blocks.get(0).toString()+" sent !");
+			System.out.println("Blocks " + blocks.get(0).getBlock_hash() + " sent !");
 
 		} catch (Exception e) {
 			e.printStackTrace();

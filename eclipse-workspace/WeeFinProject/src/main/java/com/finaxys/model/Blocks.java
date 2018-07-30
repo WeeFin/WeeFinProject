@@ -19,6 +19,10 @@ public class Blocks {
 	private long block_gas_used;
 	private long block_timestamp;
 	private long block_transaction_count;
+	
+	public Blocks() {
+		
+	}
 
 	public Blocks(long block_number, String block_hash, String block_parent_hash, String block_nonce,
 			String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root,

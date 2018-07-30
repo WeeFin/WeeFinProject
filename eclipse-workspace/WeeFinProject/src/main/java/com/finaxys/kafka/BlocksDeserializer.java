@@ -20,7 +20,7 @@ public class BlocksDeserializer implements Deserializer<Blocks> {
 		ObjectMapper mapper = new ObjectMapper();
 		Blocks blocks = null;
 		try {
-			blocks = mapper.readValue(var1, Blocks.class);
+			blocks = mapper.readValue(var2, Blocks.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
