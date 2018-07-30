@@ -2,6 +2,8 @@ package com.finaxys.kafka;
 
 import java.util.Map;
 
+import org.apache.kafka.common.serialization.Serializer;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finaxys.model.Blocks;
 
