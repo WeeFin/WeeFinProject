@@ -1,12 +1,7 @@
 package com.finaxys.model;
 
-import java.io.Serializable;
+public class Blocks {
 
-public class Blocks implements Serializable{
-	
-	
-	private static final long serialVersionUID = -6865429220065289280L;
-	
 	private long block_number;
 	private String block_hash;
 	private String block_parent_hash;
@@ -24,8 +19,6 @@ public class Blocks implements Serializable{
 	private long block_gas_used;
 	private long block_timestamp;
 	private long block_transaction_count;
-	
-	
 
 	public Blocks(long block_number, String block_hash, String block_parent_hash, String block_nonce,
 			String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root,
@@ -186,6 +179,11 @@ public class Blocks implements Serializable{
 
 	public void setBlock_transaction_count(long block_transaction_count) {
 		this.block_transaction_count = block_transaction_count;
+	}
+
+	@Override
+	public String toString() {
+		return "Blocks [block_number=" + block_number + "]";
 	}
 
 }

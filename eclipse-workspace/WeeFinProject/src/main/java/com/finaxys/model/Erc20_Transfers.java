@@ -2,9 +2,7 @@ package com.finaxys.model;
 
 import java.io.Serializable;
 
-public class Erc20_Transfers implements Serializable {
-
-	private static final long serialVersionUID = -7002539899798268859L;
+public class Erc20_Transfers {
 
 	private String erc20_token;
 	private String erc20_from;

@@ -1,10 +1,6 @@
 package com.finaxys.model;
 
-import java.io.Serializable;
-
-public class Transactions implements Serializable {
-
-	private static final long serialVersionUID = -5400527372410444092L;
+public class Transactions {
 
 	private String tx_hash;
 	private long tx_nonc;
