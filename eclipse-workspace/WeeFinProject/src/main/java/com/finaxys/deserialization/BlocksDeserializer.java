@@ -1,4 +1,4 @@
-package com.finaxys.kafka;
+package com.finaxys.deserialization;
 
 import java.util.Map;
 

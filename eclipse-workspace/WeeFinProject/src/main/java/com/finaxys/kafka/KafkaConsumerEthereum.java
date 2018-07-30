@@ -6,7 +6,6 @@ import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 
 import com.finaxys.model.Blocks;
 
@@ -27,9 +26,7 @@ public class KafkaConsumerEthereum {
 		try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
 			consumer.subscribe(Collections.singletonList(topicName));
 			while (true) {
-				System.out.println("Ici");
 				ConsumerRecords<String, Blocks> messages = consumer.poll(100);
-				System.out.println("Là");
 				for (ConsumerRecord<String, Blocks> message : messages) {
 					System.out.println("Message received " + message.value().getBlock_number());
 				}

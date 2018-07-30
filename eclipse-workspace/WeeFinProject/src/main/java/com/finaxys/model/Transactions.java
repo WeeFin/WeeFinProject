@@ -29,6 +29,10 @@ public class Transactions {
 		this.tx_gas_price = tx_gas_price;
 		this.tx_input = tx_input;
 	}
+	
+	public Transactions() {
+		
+	}
 
 	public String getTx_hash() {
 		return tx_hash;

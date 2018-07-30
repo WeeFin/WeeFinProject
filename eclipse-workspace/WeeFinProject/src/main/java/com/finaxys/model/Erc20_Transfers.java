@@ -1,7 +1,5 @@
 package com.finaxys.model;
 
-import java.io.Serializable;
-
 public class Erc20_Transfers {
 
 	private String erc20_token;
@@ -11,6 +9,10 @@ public class Erc20_Transfers {
 	private String erc20_tx_hash;
 	private long erc20_log_index;
 	private long erc20_block_number;
+	
+	public Erc20_Transfers() {
+		
+	}
 
 	public Erc20_Transfers(String erc20_token, String erc20_from, String erc20_to, double erc20_value,
 			String erc20_tx_hash, long erc20_log_index, long erc20_block_number) {
