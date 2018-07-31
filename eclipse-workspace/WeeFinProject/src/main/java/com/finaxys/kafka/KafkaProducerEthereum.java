@@ -15,7 +15,7 @@ public class KafkaProducerEthereum {
 	public static void main(String[] args) throws Exception {
 
 		if (args.length == 0) {
-			System.out.println();
+			System.out.println("Name of the topic missing");
 			return;
 		}
 
@@ -30,8 +30,8 @@ public class KafkaProducerEthereum {
 		props.put("linger.ms", 1);
 		props.put("buffer.memory", 33554432);
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		props.put("value.serializer", "com.finaxys.kafka.BlocksSerializer");
-		
+		props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
+
 		LoadClasses loadCSVFiles = new LoadClasses("/home/finaxys/blocks.csv");
 
 		List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
