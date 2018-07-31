@@ -10,7 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import com.finaxys.Configuration.LoadClasses;
 import com.finaxys.model.Blocks;
 
-public class KafkaProducerEthereum {
+public class KafkaProducerBlocks {
 
 	public static void main(String[] args) throws Exception {
 
