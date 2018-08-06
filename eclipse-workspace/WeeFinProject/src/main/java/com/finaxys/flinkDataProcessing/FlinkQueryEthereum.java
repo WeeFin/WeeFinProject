@@ -1,4 +1,4 @@
-package com.finaxys.FlinkDataProcessing;
+package com.finaxys.flinkDataProcessing;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -13,12 +13,12 @@ public class FlinkQueryEthereum {
 		DataSet<Tuple17<Integer, String, String, String, String, String, String, String, String, Double, Double, Integer, String, String, String, String, String>> csvInputBlocks = env
 				.readCsvFile("/home/finaxys/ethereum-etl/output/blocks/").types(Integer.class, String.class, String.class, String.class, String.class,
 						String.class, String.class, String.class, String.class, Double.class, Double.class,
-						Integer.class, String.class, String.class, String.class, String.class, String.class);
+						Integer.class, String.class, String.class, String.class, String.class, String.class);	
 
 		csvInputBlocks.print();
 
 		env.execute("Flink Query Ethereum");
-
+		
 	}
 
 }

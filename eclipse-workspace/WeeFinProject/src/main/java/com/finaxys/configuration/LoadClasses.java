@@ -1,4 +1,4 @@
-package com.finaxys.Configuration;
+package com.finaxys.configuration;
 
 import java.io.BufferedReader;
 import java.io.File;

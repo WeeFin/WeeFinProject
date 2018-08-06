@@ -7,7 +7,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import com.finaxys.Configuration.LoadClasses;
+import com.finaxys.configuration.LoadClasses;
 import com.finaxys.model.Erc20_Transfers;
 
 public class KafkaProducerErc20_Transfers {

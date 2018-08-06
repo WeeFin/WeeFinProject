@@ -11,7 +11,6 @@ public class BlocksSerializer implements Serializer<Blocks> {
 
 	@Override
 	public void configure(Map<String, ?> var1, boolean var2) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -29,7 +28,6 @@ public class BlocksSerializer implements Serializer<Blocks> {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
 
 	}
 
