@@ -189,5 +189,18 @@ public class Blocks {
 	public String toString() {
 		return "Blocks [block_number=" + block_number + "]";
 	}
+	
+	public static Blocks fromString(String blocks) {
+		String[] splittedValues = blocks.split(";");
+		if(splittedValues[0].equals("Blocks"))
+			return  new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
+					splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
+					splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
+					Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
+					Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
+					Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));
+		else
+			return null;
+	}
 
 }

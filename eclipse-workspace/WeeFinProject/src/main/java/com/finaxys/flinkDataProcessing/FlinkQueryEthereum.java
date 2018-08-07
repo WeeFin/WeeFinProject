@@ -1,24 +1,38 @@
 package com.finaxys.flinkDataProcessing;
 
-import org.apache.flink.api.java.DataSet;
-import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.api.java.tuple.Tuple17;
+import java.util.Properties;
+
+import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
 public class FlinkQueryEthereum {
 
 	public static void main(String[] args) throws Exception {
 
-		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-		DataSet<Tuple17<Integer, String, String, String, String, String, String, String, String, Double, Double, Integer, String, String, String, String, String>> csvInputBlocks = env
-				.readCsvFile("/home/finaxys/ethereum-etl/output/blocks/").types(Integer.class, String.class, String.class, String.class, String.class,
-						String.class, String.class, String.class, String.class, Double.class, Double.class,
-						Integer.class, String.class, String.class, String.class, String.class, String.class);	
+		// configure Kafka consumer
+		Properties props = new Properties();
+		props.setProperty("bootstrap.servers", "localhost:9092"); // Broker default host:port
+		props.setProperty("group.id", "test"); // Consumer group ID
 
-		csvInputBlocks.print();
+		DataStream<String> stream = env
+				.addSource(new FlinkKafkaConsumer011<String>(args[0], new SimpleStringSchema(), props));
 
-		env.execute("Flink Query Ethereum");
-		
+		stream.map(new MapFunction<String, String>() {
+			private static final long serialVersionUID = -6867736771747690202L;
+
+			@Override
+			public String map(String value) throws Exception {
+				return "Stream Value: " + value;
+			}
+		}).print();
+
+		env.execute();
+
 	}
 
 }

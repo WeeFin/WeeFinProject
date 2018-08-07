@@ -9,9 +9,9 @@ public class Erc20_Transfers {
 	private String erc20_tx_hash;
 	private long erc20_log_index;
 	private long erc20_block_number;
-	
+
 	public Erc20_Transfers() {
-		
+
 	}
 
 	public Erc20_Transfers(String erc20_token, String erc20_from, String erc20_to, double erc20_value,
@@ -80,6 +80,16 @@ public class Erc20_Transfers {
 
 	public void setErc20_block_number(long erc20_block_number) {
 		this.erc20_block_number = erc20_block_number;
+	}
+
+	public static Erc20_Transfers fromString(String erc20_transfers) {
+		String[] splittedValues = erc20_transfers.split(";");
+		if (splittedValues[0].equals("Erc20_Transfers"))
+			return new Erc20_Transfers(splittedValues[0], splittedValues[1], splittedValues[2],
+					Double.valueOf(splittedValues[3]), splittedValues[4], Long.valueOf(splittedValues[5]),
+					Long.valueOf(splittedValues[6]));
+		else
+			return null;
 	}
 
 }

@@ -29,9 +29,9 @@ public class Transactions {
 		this.tx_gas_price = tx_gas_price;
 		this.tx_input = tx_input;
 	}
-	
+
 	public Transactions() {
-		
+
 	}
 
 	public String getTx_hash() {
@@ -120,6 +120,17 @@ public class Transactions {
 
 	public void setTx_input(String tx_input) {
 		this.tx_input = tx_input;
+	}
+
+	public static Transactions fromString(String transactions) {
+		String[] splittedValues = transactions.split(";");
+		if (splittedValues[0].equals("Transactions"))
+			return new Transactions(splittedValues[0], Long.valueOf(splittedValues[1]), splittedValues[2],
+					Long.valueOf(splittedValues[3]), Long.valueOf(splittedValues[4]), splittedValues[5],
+					splittedValues[6], Double.valueOf(splittedValues[7]), Long.valueOf(splittedValues[8]),
+					Long.valueOf(splittedValues[9]), splittedValues[10]);
+		else
+			return null;
 	}
 
 }
