@@ -24,6 +24,10 @@ public class Blocks {
 		
 	}
 
+	public Blocks(String block_extra_data) {
+	this.block_extra_data = block_extra_data;
+	}
+
 	public Blocks(long block_number, String block_hash, String block_parent_hash, String block_nonce,
 			String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root,
 			String block_miner, double block_difficulty, double block_total_difficulty, long block_size,
@@ -187,20 +191,18 @@ public class Blocks {
 
 	@Override
 	public String toString() {
-		return "Blocks [block_number=" + block_number + "]";
+		return "Blocks [block_number=" + block_extra_data + "]";
 	}
 	
 	public static Blocks fromString(String blocks) {
-		String[] splittedValues = blocks.split(";");
-		if(splittedValues[0].equals("Blocks"))
-			return  new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
+		String[] splittedValues = blocks.split(",");
+			/*return  new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
 					splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
 					splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
 					Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
 					Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
-					Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));
-		else
-			return null;
+					Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));*/
+			return new Blocks(blocks);
 	}
 
 }
