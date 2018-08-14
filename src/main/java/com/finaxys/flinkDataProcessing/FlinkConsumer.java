@@ -10,7 +10,7 @@ import org.apache.flink.table.api.java.StreamTableEnvironment;
 
 import java.util.Properties;
 
-public class FlinkQueryEthereum {
+public class FlinkConsumer {
 
     public static void main(String[] args) throws Exception {
 

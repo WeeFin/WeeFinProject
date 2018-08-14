@@ -1,5 +1,10 @@
 package com.finaxys.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finaxys.deserialization.BlocksDeserializer;
+
+import java.util.StringJoiner;
+
 public class Blocks {
 
 	private long block_number;
@@ -191,18 +196,36 @@ public class Blocks {
 
 	@Override
 	public String toString() {
-		return "Blocks [block_number=" + block_extra_data + "]";
+		final StringJoiner sj = new StringJoiner(";")
+		.add(block_number+"");
+		sj.add(block_hash);
+		sj.add(block_parent_hash);
+		sj.add(block_nonce);
+		sj.add(block_sha3_uncles);
+		sj.add(block_logs_bloom);
+		sj.add(block_transactions_root);
+		sj.add(block_state_root);
+		sj.add(block_miner);
+		sj.add(block_difficulty+"");
+		sj.add(block_total_difficulty+"");
+		sj.add(block_size+"");
+		sj.add(block_extra_data);
+		sj.add(block_gas_limit+"");
+		sj.add(block_gas_used+"");
+		sj.add(block_timestamp+"");
+		sj.add(block_transaction_count+"");
+		return sj.toString();
 	}
-	
+
 	public static Blocks fromString(String blocks) {
-		String[] splittedValues = blocks.split(",");
-			/*return  new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
-					splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
-					splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
-					Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
-					Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
-					Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));*/
-			return new Blocks(blocks);
+		ObjectMapper mapper = new ObjectMapper();
+		Blocks b = null;
+		try {
+			b = mapper.readValue(blocks, Blocks.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return b;
 	}
 
 }
