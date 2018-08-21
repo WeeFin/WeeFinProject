@@ -1,5 +1,7 @@
 package com.finaxys.kafka;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,18 +34,25 @@ public class KafkaProducerTransactions {
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "com.finaxys.serialization.TransactionsSerializer");
 
-		LoadClasses loadCSVFiles = new LoadClasses("/home/finaxys/transactions.csv");
 
-		List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
+		Files.walk(Paths.get(args[1]))
+				.filter(Files::isRegularFile)
+				.forEach(x-> {
 
-		try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
+					LoadClasses loadCSVFiles = new LoadClasses(x.toString());
 
-			producer.send(new ProducerRecord<String, Transactions>(topicName, transactions.get(0)));
-			System.out.println("Transaction " + transactions.get(0).getTx_block_hash() + " sent !");
+					List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+					try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
+
+						for (Transactions t : transactions) {
+							producer.send(new ProducerRecord<String, Transactions>(topicName, t));
+							System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
 
 	}
 

@@ -1,5 +1,7 @@
 package com.finaxys.kafka;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,18 +34,26 @@ public class KafkaProducerBlocks {
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
 
-		LoadClasses loadCSVFiles = new LoadClasses("/home/finaxys/blocks.csv");
 
-		List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
+		Files.walk(Paths.get(args[1]))
+				.filter(Files::isRegularFile)
+				.forEach(x-> {
 
-		try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
+					LoadClasses loadCSVFiles = new LoadClasses(x.toString());
 
-			producer.send(new ProducerRecord<String, Blocks>(topicName, blocks.get(0)));
-			System.out.println("Blocks " + blocks.get(0).getBlock_hash() + " sent !");
+					List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+					try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
+
+						for(Blocks b : blocks) {
+							producer.send(new ProducerRecord<String, Blocks>(topicName, b));
+							System.out.println("Blocks " + b.getBlock_hash() + " sent !");
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
 
 	}
 

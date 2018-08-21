@@ -1,5 +1,7 @@
 package com.finaxys.kafka;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,18 +34,24 @@ public class KafkaProducerErc20_Transfers {
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "com.finaxys.serialization.Erc20_TransfersSerializer");
 
-		LoadClasses loadCSVFiles = new LoadClasses("/home/finaxys/erc20_transfers.csv");
+		Files.walk(Paths.get(args[1]))
+				.filter(Files::isRegularFile)
+				.forEach(x-> {
 
-		List<Erc20_Transfers> erc20_transfers = loadCSVFiles.getListOfErc20_TransfersFromCSV();
+					LoadClasses loadCSVFiles = new LoadClasses(x.toString());
 
-		try (Producer<String, Erc20_Transfers> producer = new KafkaProducer<>(props)) {
+					List<Erc20_Transfers> erc20_transfers = loadCSVFiles.getListOfErc20_TransfersFromCSV();
 
-			producer.send(new ProducerRecord<String, Erc20_Transfers>(topicName, erc20_transfers.get(0)));
-			System.out.println("Erc20_Transfers " + erc20_transfers.get(0).getErc20_tx_hash() + " sent !");
+					try (Producer<String, Erc20_Transfers> producer = new KafkaProducer<>(props)) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+						for (Erc20_Transfers et : erc20_transfers) {
+							producer.send(new ProducerRecord<String, Erc20_Transfers>(topicName, et));
+							System.out.println("Erc20_Transfers " + et.getErc20_tx_hash() + " sent !");
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
 
 	}
 
