@@ -46,7 +46,7 @@ public class KafkaProducerBlocks {
 					try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
 
 						for(Blocks b : blocks) {
-							producer.send(new ProducerRecord<String, Blocks>(topicName, b));
+							producer.send(new ProducerRecord<>(topicName, b));
 							System.out.println("Blocks " + b.getBlock_hash() + " sent !");
 						}
 
