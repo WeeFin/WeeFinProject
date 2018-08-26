@@ -1,4 +1,4 @@
-package com.finaxys.kafka;
+package com.finaxys.producer;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,10 +9,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import com.finaxys.configuration.LoadClasses;
-import com.finaxys.model.Blocks;
+import com.finaxys.loader.LoadModel;
+import com.finaxys.model.Transactions;
 
-public class KafkaProducerBlocks {
+public class KafkaProducerTransactions {
 
 	public static void main(String[] args) throws Exception {
 
@@ -32,24 +32,23 @@ public class KafkaProducerBlocks {
 		props.put("linger.ms", 1);
 		props.put("buffer.memory", 33554432);
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
+		props.put("value.serializer", "com.finaxys.serialization.TransactionsSerializer");
 
 
 		Files.walk(Paths.get(args[1]))
 				.filter(Files::isRegularFile)
 				.forEach(x-> {
 
-					LoadClasses loadCSVFiles = new LoadClasses(x.toString());
+					LoadModel loadCSVFiles = new LoadModel(x.toString());
 
-					List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
+					List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
 
-					try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
+					try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
 
-						for(Blocks b : blocks) {
-							producer.send(new ProducerRecord<>(topicName, b));
-							System.out.println("Blocks " + b.getBlock_hash() + " sent !");
+						for (Transactions t : transactions) {
+							producer.send(new ProducerRecord<String, Transactions>(topicName, t));
+							System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
 						}
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

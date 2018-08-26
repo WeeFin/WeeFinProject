@@ -3,7 +3,7 @@ package com.finaxys.model;
 public class Transactions {
 
 	private String tx_hash;
-	private long tx_nonc;
+	private long tx_nonce;
 	private String tx_block_hash;
 	private long tx_block_number;
 	private long tx_index;
@@ -14,11 +14,11 @@ public class Transactions {
 	private long tx_gas_price;
 	private String tx_input;
 
-	public Transactions(String tx_hash, long tx_nonc, String tx_block_hash, long tx_block_number, long tx_index,
-			String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
+	public Transactions(String tx_hash, long tx_nonce, String tx_block_hash, long tx_block_number, long tx_index,
+						String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
 		super();
 		this.tx_hash = tx_hash;
-		this.tx_nonc = tx_nonc;
+		this.tx_nonce = tx_nonce;
 		this.tx_block_hash = tx_block_hash;
 		this.tx_block_number = tx_block_number;
 		this.tx_index = tx_index;
@@ -42,12 +42,12 @@ public class Transactions {
 		this.tx_hash = tx_hash;
 	}
 
-	public long getTx_nonc() {
-		return tx_nonc;
+	public long getTx_nonce() {
+		return tx_nonce;
 	}
 
-	public void setTx_nonc(long tx_nonc) {
-		this.tx_nonc = tx_nonc;
+	public void setTx_nonce(long tx_nonce) {
+		this.tx_nonce = tx_nonce;
 	}
 
 	public String getTx_block_hash() {

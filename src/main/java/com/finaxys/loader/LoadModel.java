@@ -1,4 +1,4 @@
-package com.finaxys.configuration;
+package com.finaxys.loader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,11 +13,11 @@ import com.finaxys.model.Blocks;
 import com.finaxys.model.Erc20_Transfers;
 import com.finaxys.model.Transactions;
 
-public class LoadClasses {
+public class LoadModel {
 
 	private String csvFilesPath;
 
-	public LoadClasses(String csvFilesPath) {
+	public LoadModel(String csvFilesPath) {
 		this.csvFilesPath = csvFilesPath;
 	}
 

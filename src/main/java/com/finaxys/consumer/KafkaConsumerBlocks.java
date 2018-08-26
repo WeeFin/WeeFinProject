@@ -1,4 +1,4 @@
-package com.finaxys.kafka;
+package com.finaxys.consumer;
 
 import java.util.Collections;
 import java.util.Properties;
@@ -7,9 +7,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import com.finaxys.model.Erc20_Transfers;
+import com.finaxys.model.Blocks;
 
-public class KafkaConsumerErc20_Transfers {
+public class KafkaConsumerBlocks {
 
 	public static void main(String[] args) {
 
@@ -26,14 +26,14 @@ public class KafkaConsumerErc20_Transfers {
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		props.put("value.deserializer", "com.finaxys.deserialization.Erc20_TransfersDeserializer");
+		props.put("value.deserializer", "com.finaxys.deserialization.BlocksDeserializer");
 
-		try (KafkaConsumer<String, Erc20_Transfers> consumer = new KafkaConsumer<>(props)) {
+		try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
 			consumer.subscribe(Collections.singletonList(topicName));
 			while (true) {
-				ConsumerRecords<String, Erc20_Transfers> messages = consumer.poll(100);
-				for (ConsumerRecord<String, Erc20_Transfers> message : messages) {
-					System.out.println("Message received " + message.value().getErc20_block_number());
+				ConsumerRecords<String, Blocks> messages = consumer.poll(100);
+				for (ConsumerRecord<String, Blocks> message : messages) {
+					System.out.println("Message received " + message.value().getBlock_number());
 				}
 			}
 		} catch (Exception e) {

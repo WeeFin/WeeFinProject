@@ -1,6 +1,6 @@
 package ConfigurationTest;
 
-import com.finaxys.configuration.LoadClasses;
+import com.finaxys.loader.LoadModel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,7 +10,7 @@ class TestLoadModelClasses {
 
 	@BeforeAll
 	void setUp() throws Exception {
-		LoadClasses lc = new LoadClasses("/home/finaxys/blocks.csv");
+		LoadModel lc = new LoadModel("/home/finaxys/blocks.csv");
 	}
 
 	@AfterAll
@@ -19,7 +19,7 @@ class TestLoadModelClasses {
 
 	@Test
 	void newLoaderNoFile() throws Exception {
-		Assertions.assertThrows(NullPointerException.class, () -> new LoadClasses(null));
+		Assertions.assertThrows(NullPointerException.class, () -> new LoadModel(null));
 	}
 
 }

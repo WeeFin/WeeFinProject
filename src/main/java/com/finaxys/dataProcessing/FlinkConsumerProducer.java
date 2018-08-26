@@ -1,9 +1,7 @@
-package com.finaxys.flinkDataProcessing;
+package com.finaxys.dataProcessing;
 
 import com.finaxys.model.Blocks;
-import com.finaxys.model.Transactions;
 import com.finaxys.schema.BlocksSchema;
-import com.finaxys.schema.TransactionsSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
@@ -15,7 +13,7 @@ import org.apache.flink.types.Row;
 
 import java.util.Properties;
 
-public class FlinkConsumer {
+public class FlinkConsumerProducer {
 
     public static void main(String[] args) throws Exception {
 
@@ -58,6 +56,7 @@ public class FlinkConsumer {
                 "block_gas_used," +
                 "block_timestamp," +
                 "block_transaction_count FROM blocksTable");
+
         /*Table sqlResult = tableEnv.sqlQuery(
                 "SELECT tx_gas" +
                 "FROM blocksTable " +

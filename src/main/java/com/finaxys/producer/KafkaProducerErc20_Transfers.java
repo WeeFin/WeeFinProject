@@ -1,4 +1,4 @@
-package com.finaxys.kafka;
+package com.finaxys.producer;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,11 +9,11 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import com.finaxys.configuration.LoadClasses;
-import com.finaxys.model.Transactions;
+import com.finaxys.loader.LoadModel;
+import com.finaxys.model.Erc20_Transfers;
 
-public class KafkaProducerTransactions {
-
+public class KafkaProducerErc20_Transfers {
+	
 	public static void main(String[] args) throws Exception {
 
 		if (args.length == 0) {
@@ -32,22 +32,21 @@ public class KafkaProducerTransactions {
 		props.put("linger.ms", 1);
 		props.put("buffer.memory", 33554432);
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		props.put("value.serializer", "com.finaxys.serialization.TransactionsSerializer");
-
+		props.put("value.serializer", "com.finaxys.serialization.Erc20_TransfersSerializer");
 
 		Files.walk(Paths.get(args[1]))
 				.filter(Files::isRegularFile)
 				.forEach(x-> {
 
-					LoadClasses loadCSVFiles = new LoadClasses(x.toString());
+					LoadModel loadCSVFiles = new LoadModel(x.toString());
 
-					List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
+					List<Erc20_Transfers> erc20_transfers = loadCSVFiles.getListOfErc20_TransfersFromCSV();
 
-					try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
+					try (Producer<String, Erc20_Transfers> producer = new KafkaProducer<>(props)) {
 
-						for (Transactions t : transactions) {
-							producer.send(new ProducerRecord<String, Transactions>(topicName, t));
-							System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
+						for (Erc20_Transfers et : erc20_transfers) {
+							producer.send(new ProducerRecord<String, Erc20_Transfers>(topicName, et));
+							System.out.println("Erc20_Transfers " + et.getErc20_tx_hash() + " sent !");
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -55,5 +54,6 @@ public class KafkaProducerTransactions {
 				});
 
 	}
+
 
 }

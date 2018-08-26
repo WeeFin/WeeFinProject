@@ -1,4 +1,4 @@
-package com.finaxys.kafka;
+package com.finaxys.consumer;
 
 import java.util.Collections;
 import java.util.Properties;
@@ -7,9 +7,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import com.finaxys.model.Blocks;
+import com.finaxys.model.Transactions;
 
-public class KafkaConsumerBlocks {
+public class KafkaConsumerTransactions {
 
 	public static void main(String[] args) {
 
@@ -26,14 +26,14 @@ public class KafkaConsumerBlocks {
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		props.put("value.deserializer", "com.finaxys.deserialization.BlocksDeserializer");
+		props.put("value.deserializer", "com.finaxys.deserialization.TransactionsDeserializer");
 
-		try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
+		try (KafkaConsumer<String, Transactions> consumer = new KafkaConsumer<>(props)) {
 			consumer.subscribe(Collections.singletonList(topicName));
 			while (true) {
-				ConsumerRecords<String, Blocks> messages = consumer.poll(100);
-				for (ConsumerRecord<String, Blocks> message : messages) {
-					System.out.println("Message received " + message.value().getBlock_number());
+				ConsumerRecords<String, Transactions> messages = consumer.poll(100);
+				for (ConsumerRecord<String, Transactions> message : messages) {
+					System.out.println("Message received " + message.value().getTx_block_hash());
 				}
 			}
 		} catch (Exception e) {
