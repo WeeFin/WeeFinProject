@@ -7,13 +7,23 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class FlinkTestJoin {
 
-    public static void main(String[] args) throws Exception {
+    static StreamExecutionEnvironment env;
+    static StreamTableEnvironment tableEnv;
 
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
+    @BeforeAll
+    static void setUp() throws Exception {
+        env = StreamExecutionEnvironment.getExecutionEnvironment();
+        tableEnv = TableEnvironment.getTableEnvironment(env);
+    }
+
+    @Test
+    void test() {
 
         DataStream<Tuple2<Integer, String>> test = env.fromElements(
                 new Tuple2<>(1, "Bonjour"),
@@ -31,11 +41,17 @@ public class FlinkTestJoin {
                 "JOIN testTable2 " +
                 "ON testTable.f0=testTable2.f0");
 
-        DataStream<Tuple2<Boolean, Row>> resultStream = tableEnv.toRetractStream(sqlTestResult, Row.class);
+        DataStream<String> resultStream = tableEnv.toRetractStream(sqlTestResult, Row.class)
+                .map(t -> {
+                    Row row = t.f1;
+                    return row.toString();
+        }).returns(String.class);
         resultStream.print();
+    }
 
+    @AfterAll
+    static void tearDown() throws Exception{
         env.execute();
-
     }
 
 }
