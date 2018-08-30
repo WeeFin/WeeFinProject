@@ -32,6 +32,10 @@ public class BlocksTransactions {
     private long tx_gas_price;
     private String tx_input;
 
+    public BlocksTransactions(){
+
+    }
+
     public BlocksTransactions(long block_number, String block_hash, String block_parent_hash, String block_nonce, String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root, String block_miner, double block_difficulty, double block_total_difficulty, long block_size, String block_extra_data, long block_gas_limit, long block_gas_used, long block_timestamp, long block_transaction_count, String tx_hash, long tx_nonce, long tx_block_number, long tx_index, String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
         this.block_number = block_number;
         this.block_hash = block_hash;

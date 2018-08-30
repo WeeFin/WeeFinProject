@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.finaxys.model.Blocks;
+import com.finaxys.model.BlocksTransactions;
 import com.finaxys.model.Erc20_Transfers;
 import com.finaxys.model.Transactions;
 
@@ -111,6 +112,39 @@ public class LoadModel {
         }
 
         return inputListErc_20_Transfers;
+
+    }
+
+    public List<BlocksTransactions> getListOfBlocksTransactionsFromCSV() {
+
+        List<BlocksTransactions> inputListBlocksTransactions = new ArrayList<>();
+
+        File inputF = new File(csvFilesPath);
+        try (InputStream inputFS = new FileInputStream(inputF);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
+            inputListBlocksTransactions =
+                    br.lines()
+                            .skip(1)
+                            .map(line -> {
+                                        String[] splittedValues = line.split(",");
+                                        return new BlocksTransactions(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
+                                                splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
+                                                splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
+                                                Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
+                                                Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
+                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]),splittedValues[17], Long.valueOf(splittedValues[18]),
+                                                Long.valueOf(splittedValues[19]), Long.valueOf(splittedValues[20]),
+                                                splittedValues[21], splittedValues[22], Double.valueOf(splittedValues[23]),
+                                                Long.valueOf(splittedValues[24]), Long.valueOf(splittedValues[25]), splittedValues[26]);
+                                    }
+                            )
+                            .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return inputListBlocksTransactions;
 
     }
 
