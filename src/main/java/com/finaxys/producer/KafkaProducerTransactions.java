@@ -46,7 +46,7 @@ public class KafkaProducerTransactions {
 					try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
 
 						for (Transactions t : transactions) {
-							producer.send(new ProducerRecord<String, Transactions>(topicName, t));
+							producer.send(new ProducerRecord<>(topicName, t));
 							System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
 						}
 					} catch (Exception e) {
