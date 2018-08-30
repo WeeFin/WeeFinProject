@@ -45,12 +45,12 @@ public class FlinkTestJoin {
                 .map(t -> {
                     Row row = t.f1;
                     return row.toString();
-        }).returns(String.class);
+                }).returns(String.class);
         resultStream.print();
     }
 
     @AfterAll
-    static void tearDown() throws Exception{
+    static void tearDown() throws Exception {
         env.execute();
     }
 

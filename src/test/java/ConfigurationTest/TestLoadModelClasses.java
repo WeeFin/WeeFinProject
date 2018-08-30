@@ -8,18 +8,18 @@ import org.junit.jupiter.api.Test;
 
 class TestLoadModelClasses {
 
-	@BeforeAll
-	void setUp() throws Exception {
-		LoadModel lc = new LoadModel("/home/finaxys/blocks.csv");
-	}
+    @BeforeAll
+    void setUp() throws Exception {
+        LoadModel lc = new LoadModel("/home/finaxys/blocks.csv");
+    }
 
-	@AfterAll
-	void tearDown() throws Exception {
-	}
+    @AfterAll
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void newLoaderNoFile() throws Exception {
-		Assertions.assertThrows(NullPointerException.class, () -> new LoadModel(null));
-	}
+    @Test
+    void newLoaderNoFile() throws Exception {
+        Assertions.assertThrows(NullPointerException.class, () -> new LoadModel(null));
+    }
 
 }

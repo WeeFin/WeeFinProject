@@ -14,47 +14,47 @@ import com.finaxys.model.Blocks;
 
 public class KafkaProducerBlocks {
 
-	public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
 
-		if (args.length == 0) {
-			System.out.println("Name of the topic missing");
-			return;
-		}
+        if (args.length == 0) {
+            System.out.println("Name of the topic missing");
+            return;
+        }
 
-		String topicName = args[0];
+        String topicName = args[0];
 
-		// create instance for properties to access producer configs
-		Properties props = new Properties();
-		props.put("bootstrap.servers", "localhost:9092");
-		props.put("acks", "all");
-		props.put("retries", 0);
-		props.put("batch.size", 16384);
-		props.put("linger.ms", 1);
-		props.put("buffer.memory", 33554432);
-		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
+        // create instance for properties to access producer configs
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("acks", "all");
+        props.put("retries", 0);
+        props.put("batch.size", 16384);
+        props.put("linger.ms", 1);
+        props.put("buffer.memory", 33554432);
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
 
 
-		Files.walk(Paths.get(args[1]))
-				.filter(Files::isRegularFile)
-				.forEach(x-> {
+        Files.walk(Paths.get(args[1]))
+                .filter(Files::isRegularFile)
+                .forEach(x -> {
 
-					LoadModel loadCSVFiles = new LoadModel(x.toString());
+                    LoadModel loadCSVFiles = new LoadModel(x.toString());
 
-					List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
+                    List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
 
-					try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
+                    try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
 
-						for(Blocks b : blocks) {
-							producer.send(new ProducerRecord<>(topicName, b));
-							System.out.println("Blocks " + b.getBlock_hash() + " sent !");
-						}
+                        for (Blocks b : blocks) {
+                            producer.send(new ProducerRecord<>(topicName, b));
+                            System.out.println("Blocks " + b.getBlock_hash() + " sent !");
+                        }
 
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
 
-	}
+    }
 
 }

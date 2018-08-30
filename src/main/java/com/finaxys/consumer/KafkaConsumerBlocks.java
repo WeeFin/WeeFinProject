@@ -11,35 +11,35 @@ import com.finaxys.model.Blocks;
 
 public class KafkaConsumerBlocks {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		if (args.length == 0) {
-			System.out.println("Name of the topic missing");
-			return;
-		}
+        if (args.length == 0) {
+            System.out.println("Name of the topic missing");
+            return;
+        }
 
-		String topicName = args[0];
-		Properties props = new Properties();
+        String topicName = args[0];
+        Properties props = new Properties();
 
-		props.put("bootstrap.servers", "localhost:9092");
-		props.put("group.id", "test");
-		props.put("enable.auto.commit", "true");
-		props.put("auto.commit.interval.ms", "1000");
-		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		props.put("value.deserializer", "com.finaxys.deserialization.BlocksDeserializer");
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("group.id", "test");
+        props.put("enable.auto.commit", "true");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "com.finaxys.deserialization.BlocksDeserializer");
 
-		try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
-			consumer.subscribe(Collections.singletonList(topicName));
-			while (true) {
-				ConsumerRecords<String, Blocks> messages = consumer.poll(100);
-				for (ConsumerRecord<String, Blocks> message : messages) {
-					System.out.println("Message received " + message.value().getBlock_number());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try (KafkaConsumer<String, Blocks> consumer = new KafkaConsumer<>(props)) {
+            consumer.subscribe(Collections.singletonList(topicName));
+            while (true) {
+                ConsumerRecords<String, Blocks> messages = consumer.poll(100);
+                for (ConsumerRecord<String, Blocks> message : messages) {
+                    System.out.println("Message received " + message.value().getBlock_number());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }
