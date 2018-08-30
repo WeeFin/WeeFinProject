@@ -18,7 +18,7 @@ public class KafkaConsumerBlocks {
 			return;
 		}
 
-		String topicName = args[0].toString();
+		String topicName = args[0];
 		Properties props = new Properties();
 
 		props.put("bootstrap.servers", "localhost:9092");

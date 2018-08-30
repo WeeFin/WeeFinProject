@@ -21,7 +21,7 @@ public class KafkaProducerErc20_Transfers {
 			return;
 		}
 
-		String topicName = args[0].toString();
+		String topicName = args[0];
 
 		// create instance for properties to access producer configs
 		Properties props = new Properties();

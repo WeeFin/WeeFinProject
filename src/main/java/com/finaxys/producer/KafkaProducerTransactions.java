@@ -21,7 +21,7 @@ public class KafkaProducerTransactions {
 			return;
 		}
 
-		String topicName = args[0].toString();
+		String topicName = args[0];
 
 		// create instance for properties to access producer configs
 		Properties props = new Properties();
@@ -42,6 +42,8 @@ public class KafkaProducerTransactions {
 					LoadModel loadCSVFiles = new LoadModel(x.toString());
 
 					List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
+                    System.out.println(transactions.size());
+					transactions.forEach(System.out::println);
 
 					try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
 

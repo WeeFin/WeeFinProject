@@ -15,104 +15,121 @@ import com.finaxys.model.Transactions;
 
 public class LoadModel {
 
-	private String csvFilesPath;
+    private String csvFilesPath;
 
-	public LoadModel(String csvFilesPath) {
-		this.csvFilesPath = csvFilesPath;
-	}
+    public LoadModel(String csvFilesPath) {
+        this.csvFilesPath = csvFilesPath;
+    }
 
-	/**
-	 * Load Blocks classes from CSV data
-	 */
-	public List<Blocks> getListOfBlocksFromCSV() {
+    /**
+     * Load Blocks classes from CSV data
+     */
+    public List<Blocks> getListOfBlocksFromCSV() {
 
-		List<Blocks> inputListBlocks = new ArrayList<>();
+        List<Blocks> inputListBlocks = new ArrayList<>();
 
-		File inputF = new File(csvFilesPath);
-		try (InputStream inputFS = new FileInputStream(inputF);
-				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
-			inputListBlocks = br.lines().skip(1)
-					.map(line -> new Blocks(Long.valueOf(line.split(",")[0]), line.split(",")[1], line.split(",")[2],
-							line.split(",")[3], line.split(",")[4], line.split(",")[5], line.split(",")[6],
-							line.split(",")[7], line.split(",")[8], Double.valueOf(line.split(",")[9]),
-							Double.valueOf(line.split(",")[10]), Long.valueOf(line.split(",")[11]), line.split(",")[12],
-							Long.valueOf(line.split(",")[13]), Long.valueOf(line.split(",")[14]),
-							Long.valueOf(line.split(",")[15]), Long.valueOf(line.split(",")[16])))
-					.collect(Collectors.toList());
+        File inputF = new File(csvFilesPath);
+        try (InputStream inputFS = new FileInputStream(inputF);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
+            inputListBlocks =
+                    br.lines()
+                            .skip(1)
+                            .map(line -> {
+                                        String[] splittedValues = line.split(",");
+                                        return new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
+                                                splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
+                                                splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
+                                                Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
+                                                Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
+                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));
+                                    }
+                            )
+                            .collect(Collectors.toList());
 
-		} catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		}
+        return inputListBlocks;
 
-		return inputListBlocks;
+    }
 
-	}
+    /**
+     * Load Transactions classes from CSV data
+     */
+    public List<Transactions> getListOfTransactionsFromCSV() {
 
-	/**
-	 * Load Transactions classes from CSV data
-	 */
-	public List<Transactions> getListOfTransactionsFromCSV() {
+        List<Transactions> inputListTransactions = new ArrayList<>();
 
-		List<Transactions> inputListTransactions = new ArrayList<>();
+        File inputF = new File(csvFilesPath);
+        try (InputStream inputFS = new FileInputStream(inputF);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
+            inputListTransactions =
+                    br.lines()
+                            .skip(1)
+                            .map(line -> {
+                                String[] splittedValues = line.split(",");
+                                System.out.println((splittedValues[7]));
+                                return new Transactions(splittedValues[0], Long.valueOf(splittedValues[1]),
+                                        splittedValues[2], Long.valueOf(splittedValues[3]), Long.valueOf(splittedValues[4]),
+                                        splittedValues[5], splittedValues[6], Double.valueOf(splittedValues[7]),
+                                        Long.valueOf(splittedValues[8]), Long.valueOf(splittedValues[9]), splittedValues[10]);
+                            })
+                            .collect(Collectors.toList());
 
-		File inputF = new File(csvFilesPath);
-		try (InputStream inputFS = new FileInputStream(inputF);
-				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
-			inputListTransactions = br.lines().skip(1)
-					.map(line -> new Transactions(line.split(",")[0], Long.valueOf(line.split(",")[1]),
-							line.split(",")[2], Long.valueOf(line.split(",")[3]), Long.valueOf(line.split(",")[4]),
-							line.split(",")[5], line.split(",")[6], Double.valueOf(line.split(",")[7]),
-							Long.valueOf(line.split(",")[8]), Long.valueOf(line.split(",")[9]), line.split(",")[10]))
-					.collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		} catch (Exception e) {
+        return inputListTransactions;
 
-		}
+    }
 
-		return inputListTransactions;
+    /*
+     * Load ERC20 classes from CSV data
+     */
+    public List<Erc20_Transfers> getListOfErc20_TransfersFromCSV() {
 
-	}
+        List<Erc20_Transfers> inputListErc_20_Transfers = new ArrayList<>();
 
-	/*
-	 * Load ERC20 classes from CSV data
-	 */
-	public List<Erc20_Transfers> getListOfErc20_TransfersFromCSV() {
+        File inputF = new File(csvFilesPath);
+        try (InputStream inputFS = new FileInputStream(inputF);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
+            inputListErc_20_Transfers =
+                    br.lines()
+                            .skip(1)
+                            .map(line -> {
+                                String[] splittedValues = line.split(",");
+                                return new Erc20_Transfers(splittedValues[0], splittedValues[1], splittedValues[2],
+                                        Double.valueOf(splittedValues[3]), splittedValues[4], Long.valueOf(splittedValues[5]),
+                                        Long.valueOf(splittedValues[6]));
+                            })
+                            .collect(Collectors.toList());
 
-		List<Erc20_Transfers> inputListErc_20_Transfers = new ArrayList<>();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		File inputF = new File(csvFilesPath);
-		try (InputStream inputFS = new FileInputStream(inputF);
-				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
-			inputListErc_20_Transfers = br.lines().skip(1)
-					.map(line -> new Erc20_Transfers(line.split(",")[0], line.split(",")[1], line.split(",")[2],
-							Double.valueOf(line.split(",")[3]), line.split(",")[4], Long.valueOf(line.split(",")[5]),
-							Long.valueOf(line.split(",")[6])))
-					.collect(Collectors.toList());
+        return inputListErc_20_Transfers;
 
-		} catch (Exception e) {
+    }
 
-		}
+    /**
+     * Print every line from a CSV File
+     */
+    public void printCSVFilesLines() {
 
-		return inputListErc_20_Transfers;
+        File inputF = new File(csvFilesPath);
+        System.out.println(inputF.length());
+        try (InputStream inputFS = new FileInputStream(inputF);
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
+            br.lines().skip(1).forEach(System.out::println);
 
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	/**
-	 * Print every line from a CSV File
-	 */
-	public void printCSVFilesLines() {
+    }
 
-		File inputF = new File(csvFilesPath);
-		System.out.println(inputF.length());
-		try (InputStream inputFS = new FileInputStream(inputF);
-				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
-			br.lines().skip(1).forEach(System.out::println);
 
-		} catch (Exception e) {
-
-		}
-
-	}
-	
-	
 }

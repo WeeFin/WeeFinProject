@@ -1,5 +1,7 @@
 package com.finaxys.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Transactions {
 
 	private String tx_hash;
@@ -123,14 +125,14 @@ public class Transactions {
 	}
 
 	public static Transactions fromString(String transactions) {
-		String[] splittedValues = transactions.split(";");
-		if (splittedValues[0].equals("Transactions"))
-			return new Transactions(splittedValues[0], Long.valueOf(splittedValues[1]), splittedValues[2],
-					Long.valueOf(splittedValues[3]), Long.valueOf(splittedValues[4]), splittedValues[5],
-					splittedValues[6], Double.valueOf(splittedValues[7]), Long.valueOf(splittedValues[8]),
-					Long.valueOf(splittedValues[9]), splittedValues[10]);
-		else
-			return null;
+		ObjectMapper mapper = new ObjectMapper();
+		Transactions t= null;
+		try {
+			t = mapper.readValue(transactions, Transactions.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return t;
 	}
 
 }
