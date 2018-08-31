@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public class BlocksTransactionsSchema implements DeserializationSchema<BlocksTransactions>, SerializationSchema<BlocksTransactions> {
 
+    private static final long serialVersionUID = 6444283837183255764L;
+
 
     @Override
     public BlocksTransactions deserialize(byte[] message) throws IOException {

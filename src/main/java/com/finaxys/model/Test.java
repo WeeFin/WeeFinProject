@@ -1,28 +1,34 @@
 package com.finaxys.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Test {
 
-    String field2;
+    String block_hash;
+    long nbTransactions;
 
-    long count;
+    public Test(String block_hash, long nbTransactions) {
+        this.block_hash = block_hash;
+        this.nbTransactions = nbTransactions;
+    }
 
-    public Test(String field2, long count) {
-        this.field2 = field2;
-        this.count = count;
+    public static Test fromString(String test) {
+        ObjectMapper mapper = new ObjectMapper();
+        Test t = null;
+        try {
+            t = mapper.readValue(test, Test.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return t;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Test{");
-        sb.append("field2='").append(field2).append('\'');
-        sb.append(", count=").append(count);
+        sb.append("block_hash='").append(block_hash).append('\'');
+        sb.append(", nbTransactions=").append(nbTransactions);
         sb.append('}');
         return sb.toString();
-    }
-
-    public static Test fromString(String test) {
-        System.err.println(test);
-        String[] splittedValues = test.split("\\s+");
-        return new Test(splittedValues[0], Long.valueOf(splittedValues[1]));
     }
 }

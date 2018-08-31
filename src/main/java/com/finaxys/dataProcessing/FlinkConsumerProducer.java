@@ -19,8 +19,8 @@ public class FlinkConsumerProducer {
 
     public static void main(String[] args) throws Exception {
 
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        final StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
         // configure Kafka consumer
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "localhost:9092"); // Broker default host:port
@@ -31,23 +31,24 @@ public class FlinkConsumerProducer {
 
         DataStream<BlocksTransactions> blocksTransactions = env.addSource(flinkBlocksTransactionsConsumer);
 
-        //blocksTransactions.print();
 
         tableEnv.registerDataStream("blocksTransactionsTable", blocksTransactions);
 
         Table sqlResult
                 = tableEnv.sqlQuery(
-                        "SELECT block_hash, count(tx_hash) " +
+                "SELECT block_hash, count(tx_hash) " +
                         "FROM blocksTransactionsTable " +
                         "GROUP BY block_hash");
 
+
         DataStream<Test> resultStream = tableEnv
                 .toRetractStream(sqlResult, Row.class)
+                .filter(t -> t.f0)
                 .map(t -> {
                     Row r = t.f1;
-                    String field2 = r.getField(0).toString();
-                    long count = Long.valueOf(r.getField(1).toString());
-                    return new Test(field2, count);
+                    String block_hash = r.getField(0).toString();
+                    long nbTransactions = Long.valueOf(r.getField(1).toString());
+                    return new Test(block_hash, nbTransactions);
                 })
                 .returns(Test.class);
 
