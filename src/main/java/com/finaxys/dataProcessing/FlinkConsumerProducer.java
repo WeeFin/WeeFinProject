@@ -36,9 +36,9 @@ public class FlinkConsumerProducer {
 
         Table sqlResult
                 = tableEnv.sqlQuery(
-                "SELECT block_hash, count(tx_hash) " +
+                "SELECT block_number, count(tx_hash) " +
                         "FROM blocksTransactionsTable " +
-                        "GROUP BY block_hash");
+                        "GROUP BY block_number");
 
 
         DataStream<Test> resultStream = tableEnv

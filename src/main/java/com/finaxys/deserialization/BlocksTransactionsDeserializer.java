@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 import java.util.Map;
 
 public class BlocksTransactionsDeserializer implements Deserializer<BlocksTransactions> {
+
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
 
@@ -15,13 +16,13 @@ public class BlocksTransactionsDeserializer implements Deserializer<BlocksTransa
     @Override
     public BlocksTransactions deserialize(String topic, byte[] data) {
         ObjectMapper mapper = new ObjectMapper();
-        BlocksTransactions blocks = null;
+        BlocksTransactions blocksTransactions = null;
         try {
-            blocks = mapper.readValue(data, BlocksTransactions.class);
+            blocksTransactions = mapper.readValue(data, BlocksTransactions.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return blocks;
+        return blocksTransactions;
     }
 
     @Override

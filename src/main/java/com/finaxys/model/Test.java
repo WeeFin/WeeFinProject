@@ -1,14 +1,17 @@
 package com.finaxys.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 
 public class Test {
 
-    String block_hash;
+    String block_number;
     long nbTransactions;
 
-    public Test(String block_hash, long nbTransactions) {
-        this.block_hash = block_hash;
+    public Test(){ }
+
+    public Test(String block_number, long nbTransactions) {
+        this.block_number = block_number;
         this.nbTransactions = nbTransactions;
     }
 
@@ -25,10 +28,9 @@ public class Test {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Test{");
-        sb.append("block_hash='").append(block_hash).append('\'');
-        sb.append(", nbTransactions=").append(nbTransactions);
-        sb.append('}');
-        return sb.toString();
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.append("block_number", block_number);
+        jsonObj.append("nbTransactions", nbTransactions);
+        return jsonObj.toString();
     }
 }

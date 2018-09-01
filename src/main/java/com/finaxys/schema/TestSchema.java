@@ -10,6 +10,8 @@ import java.io.IOException;
 public class TestSchema implements DeserializationSchema<Test>, SerializationSchema<Test> {
 
 
+    private static final long serialVersionUID = 7793410336185483054L;
+
     @Override
     public Test deserialize(byte[] message) throws IOException {
         return Test.fromString(new String(message));

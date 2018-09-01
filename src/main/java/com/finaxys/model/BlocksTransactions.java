@@ -295,4 +295,38 @@ public class BlocksTransactions {
         }
         return bt;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BlocksTransactions{");
+        sb.append("block_number=").append(block_number);
+        sb.append(", block_hash='").append(block_hash).append('\'');
+        sb.append(", block_parent_hash='").append(block_parent_hash).append('\'');
+        sb.append(", block_nonce='").append(block_nonce).append('\'');
+        sb.append(", block_sha3_uncles='").append(block_sha3_uncles).append('\'');
+        sb.append(", block_logs_bloom='").append(block_logs_bloom).append('\'');
+        sb.append(", block_transactions_root='").append(block_transactions_root).append('\'');
+        sb.append(", block_state_root='").append(block_state_root).append('\'');
+        sb.append(", block_miner='").append(block_miner).append('\'');
+        sb.append(", block_difficulty=").append(block_difficulty);
+        sb.append(", block_total_difficulty=").append(block_total_difficulty);
+        sb.append(", block_size=").append(block_size);
+        sb.append(", block_extra_data='").append(block_extra_data).append('\'');
+        sb.append(", block_gas_limit=").append(block_gas_limit);
+        sb.append(", block_gas_used=").append(block_gas_used);
+        sb.append(", block_timestamp=").append(block_timestamp);
+        sb.append(", block_transaction_count=").append(block_transaction_count);
+        sb.append(", tx_hash='").append(tx_hash).append('\'');
+        sb.append(", tx_nonce=").append(tx_nonce);
+        sb.append(", tx_block_number=").append(tx_block_number);
+        sb.append(", tx_index=").append(tx_index);
+        sb.append(", tx_from='").append(tx_from).append('\'');
+        sb.append(", tx_to='").append(tx_to).append('\'');
+        sb.append(", tx_value=").append(tx_value);
+        sb.append(", tx_gas=").append(tx_gas);
+        sb.append(", tx_gas_price=").append(tx_gas_price);
+        sb.append(", tx_input='").append(tx_input).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

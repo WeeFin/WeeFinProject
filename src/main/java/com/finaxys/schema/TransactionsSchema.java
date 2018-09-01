@@ -10,9 +10,7 @@ import com.finaxys.model.Transactions;
 
 public class TransactionsSchema implements DeserializationSchema<Transactions>, SerializationSchema<Transactions> {
 
-    /**
-     *
-     */
+    
     private static final long serialVersionUID = 6680074076962797876L;
 
     @Override
