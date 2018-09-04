@@ -5,8 +5,8 @@ import org.json.JSONObject;
 
 public class Test {
 
-    String block_number;
-    long nbTransactions;
+    public String block_number;
+    public long nbTransactions;
 
     public Test(){ }
 

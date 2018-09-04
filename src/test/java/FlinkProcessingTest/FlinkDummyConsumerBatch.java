@@ -1,4 +1,5 @@
-package com.finaxys.dataProcessing;
+package FlinkProcessingTest;
+
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -8,7 +9,7 @@ import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.types.Row;
 
-public class FlinkBatchProcessing {
+public class FlinkDummyConsumerBatch {
 
     public static void main(String[] args) throws Exception {
 
@@ -50,19 +51,15 @@ public class FlinkBatchProcessing {
 
         tableEnv.registerTableSource("blocksTransactionsTable", csvTableSource);
 
-//        Table table1 = tableEnv.scan("blocksTransactionsTable");
-
-
         Table sqlResult = tableEnv.sqlQuery(
-                "SELECT block_number, count(tx_hash) " +
-                        "FROM blocksTransactionsTable " +
-                        "GROUP BY block_number");
+                "SELECT block_timestamp" +
+                        "FROM blocksTransactionsTable");
 
         DataSet<Row> data = tableEnv.toDataSet(sqlResult, Row.class);
-
 
         data.print();
 
         // env.execute();
+
     }
 }
