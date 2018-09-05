@@ -10,25 +10,45 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
 public class FlinkDummyProducerConsumer {
 
-    public static void main(String[] args) throws Exception {
 
-        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        final StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
-        // configure Kafka consumer
-        Properties props = new Properties();
+    public static StreamExecutionEnvironment env;
+    public static StreamTableEnvironment tableEnv;
+
+
+    @BeforeAll
+    public static void setUp() {
+        env = StreamExecutionEnvironment.getExecutionEnvironment();
+        tableEnv = TableEnvironment.getTableEnvironment(env);
+    }
+
+    DataStream<Blocks> testKafkaConsumer() {
+
+        Properties props;
+
+        props = new Properties();
         props.setProperty("bootstrap.servers", "localhost:9092"); // Broker default host:port
-        props.setProperty("group.id", "flink-consumer"); // Consumer group ID
+        props.setProperty("group.id", "flink-getDataStreamFromKafka"); // Consumer group ID
 
-        FlinkKafkaConsumer011<Blocks> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(args[0], new BlocksSchema(), props);
+        FlinkKafkaConsumer011<Blocks> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>("TestTopicBlocks", new BlocksSchema(), props);
         flinkBlocksTransactionsConsumer.setStartFromEarliest();
 
         DataStream<Blocks> blocksTransactions = env.addSource(flinkBlocksTransactionsConsumer);
 
+        return blocksTransactions;
+    }
+
+    @Test
+    Table testSQLQuery() {
+
+        DataStream<Blocks> blocksTransactions = testKafkaConsumer();
 
         tableEnv.registerDataStream("blocksTable", blocksTransactions);
 
@@ -52,6 +72,13 @@ public class FlinkDummyProducerConsumer {
                         "block_transaction_count " +
                         "FROM blocksTable");
 
+        return sqlResult;
+    }
+
+    @Test
+    void testKafkaProducer() {
+
+        Table sqlResult = testSQLQuery();
 
         DataStream<Blocks> resultStream = tableEnv
                 .toRetractStream(sqlResult, Row.class)
@@ -96,10 +123,12 @@ public class FlinkDummyProducerConsumer {
 
         resultStream.print();
 
-        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTopic", new BlocksSchema()));
+        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTestTopic", new BlocksSchema()));
+    }
 
+    @AfterAll
+    public static void init() throws Exception {
         env.execute();
-
     }
 
 }

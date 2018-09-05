@@ -52,7 +52,7 @@ public class FlinkDummyConsumerBatch {
         tableEnv.registerTableSource("blocksTransactionsTable", csvTableSource);
 
         Table sqlResult = tableEnv.sqlQuery(
-                "SELECT block_timestamp" +
+                "SELECT block_timestamp " +
                         "FROM blocksTransactionsTable");
 
         DataSet<Row> data = tableEnv.toDataSet(sqlResult, Row.class);

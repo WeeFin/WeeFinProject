@@ -1,14 +1,17 @@
 package com.finaxys.consumer;
 
-import java.util.Collections;
-import java.util.Properties;
-
+import com.finaxys.model.Blocks;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import com.finaxys.model.Blocks;
+import java.util.Collections;
+import java.util.Properties;
 
+/**
+ * Class not used anymore, see Flink Consumer
+ */
+@Deprecated
 public class KafkaConsumerBlocks {
 
     public static void main(String[] args) {

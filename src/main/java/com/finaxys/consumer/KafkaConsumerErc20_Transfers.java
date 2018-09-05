@@ -1,14 +1,14 @@
 package com.finaxys.consumer;
 
-import java.util.Collections;
-import java.util.Properties;
-
+import com.finaxys.model.Erc20_Transfers;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import com.finaxys.model.Erc20_Transfers;
+import java.util.Collections;
+import java.util.Properties;
 
+@Deprecated
 public class KafkaConsumerErc20_Transfers {
 
     public static void main(String[] args) {

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 public class FlinkTestJoin {
 
-    static StreamExecutionEnvironment env;
-    static StreamTableEnvironment tableEnv;
+    public static StreamExecutionEnvironment env;
+    public static StreamTableEnvironment tableEnv;
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -33,6 +33,7 @@ public class FlinkTestJoin {
                 new Tuple2<>(1, "Français"),
                 new Tuple2<>(2, "English"));
 
+        // register the datastreams into tables
         tableEnv.registerDataStream("testTable", test);
         tableEnv.registerDataStream("testTable2", test2);
 
@@ -41,6 +42,7 @@ public class FlinkTestJoin {
                 "JOIN testTable2 " +
                 "ON testTable.f0=testTable2.f0");
 
+        // convert the table into DataStream
         DataStream<String> resultStream = tableEnv.toRetractStream(sqlTestResult, Row.class)
                 .map(t -> {
                     Row row = t.f1;
@@ -50,7 +52,7 @@ public class FlinkTestJoin {
     }
 
     @AfterAll
-    static void tearDown() throws Exception {
+    static void init() throws Exception {
         env.execute();
     }
 

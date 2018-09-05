@@ -4,6 +4,7 @@ import com.finaxys.model.BlocksTransactions;
 import com.finaxys.model.Test;
 import com.finaxys.schema.BlocksTransactionsSchema;
 import com.finaxys.schema.TestSchema;
+import com.finaxys.utils.KafkaUtils;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -20,35 +21,41 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FlinkConsumerProducer {
 
+    public static final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    public static final StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
+
     public static void main(String[] args) throws Exception {
 
-        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        final StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
-        // configure Kafka consumer
-        Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "localhost:9092"); // Broker default host:port
-        props.setProperty("group.id", "flink-consumer"); // Consumer group ID
+        // get blockstransactions data from Kafka and put it in a DataStream
+        DataStream<BlocksTransactions> blocksTransactions = getDataStreamFromKafka(args[0], env);
 
-        FlinkKafkaConsumer011<BlocksTransactions> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(args[0], new BlocksTransactionsSchema(), props);
-        flinkBlocksTransactionsConsumer.setStartFromEarliest();
-
-        DataStream<BlocksTransactions> blocksTransactions = env.addSource(flinkBlocksTransactionsConsumer);
-
-
+        // register datastream into a Table
         tableEnv.registerDataStream("blocksTransactionsTable", blocksTransactions);
 
-        Table sqlResult
-                = tableEnv.sqlQuery(
-                "SELECT block_number, count(tx_hash) " +
-                        "FROM blocksTransactionsTable " +
-                        "GROUP BY block_number");
+        // get Result of SQL query from DataStream
+        Table sqlResult = getNumberOfTransactionsByBlock(tableEnv);
 
+        // Convert Table to DataStream
+        DataStream<Test> resultStream = getDataStreamFromTable(tableEnv, sqlResult);
 
-        DataStream<Test> resultStream = tableEnv
+        resultStream.print();
+
+        // send datastream data to elasticsearch
+        sendDataStreamToElasticSearch(resultStream);
+
+        env.execute();
+
+    }
+
+    public static DataStream<Test> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
+        return tableEnv
                 .toRetractStream(sqlResult, Row.class)
                 .filter(t -> t.f0)
                 .map(t -> {
@@ -58,11 +65,23 @@ public class FlinkConsumerProducer {
                     return new Test(block_hash, nbTransactions);
                 })
                 .returns(Test.class);
+    }
 
-        //resultStream.print();
+    public static DataStream<BlocksTransactions> getDataStreamFromKafka(String arg, StreamExecutionEnvironment env) {
+        FlinkKafkaConsumer011<BlocksTransactions> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(arg, new BlocksTransactionsSchema(), KafkaUtils.getProperties());
+        flinkBlocksTransactionsConsumer.setStartFromEarliest();
 
-        // send data to elasticsearch
+        return env.addSource(flinkBlocksTransactionsConsumer);
+    }
 
+    public static Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv) {
+        return tableEnv.sqlQuery(
+                "SELECT block_number, count(tx_hash) " +
+                        "FROM blocksTransactionsTable " +
+                        "GROUP BY block_number");
+    }
+
+    public static void sendDataStreamToElasticSearch(DataStream<Test> resultStream) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
         httpHosts.add(new HttpHost("10.2.3.1", 9200, "http"));
@@ -73,9 +92,6 @@ public class FlinkConsumerProducer {
                 httpHosts, new NumberOfTransactionsByBlocks());
 
         resultStream.addSink(esSinkBuilder.build());
-
-        env.execute();
-
     }
 
     public static class NumberOfTransactionsByBlocks implements ElasticsearchSinkFunction<Test> {
