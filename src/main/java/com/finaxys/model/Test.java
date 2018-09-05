@@ -1,7 +1,6 @@
 package com.finaxys.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 
 public class Test {
 
@@ -28,9 +27,10 @@ public class Test {
 
     @Override
     public String toString() {
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.append("block_number", block_number);
-        jsonObj.append("nbTransactions", nbTransactions);
-        return jsonObj.toString();
+        final StringBuilder sb = new StringBuilder("Test{");
+        sb.append("block_number='").append(block_number).append('\'');
+        sb.append(", nbTransactions=").append(nbTransactions);
+        sb.append('}');
+        return sb.toString();
     }
 }

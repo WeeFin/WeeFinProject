@@ -26,35 +26,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FlinkConsumerProducer {
+public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractConsumerProducer {
 
-    public static final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-    public static final StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
 
     public static void main(String[] args) throws Exception {
 
+        FlinkAbtractConsumerProducer facp = new FlinkConsumerProducerNbTransactionsByBlocks();
+
         // get blockstransactions data from Kafka and put it in a DataStream
-        DataStream<BlocksTransactions> blocksTransactions = getDataStreamFromKafka(args[0], env);
+        DataStream<BlocksTransactions> blocksTransactions = facp.getDataStreamFromKafka(args[0], facp.env);
 
         // register datastream into a Table
-        tableEnv.registerDataStream("blocksTransactionsTable", blocksTransactions);
+        facp.tableEnv.registerDataStream("blocksTransactionsTable", blocksTransactions);
 
         // get Result of SQL query from DataStream
-        Table sqlResult = getNumberOfTransactionsByBlock(tableEnv);
+        Table sqlResult = facp.getNumberOfTransactionsByBlock(facp.tableEnv);
 
         // Convert Table to DataStream
-        DataStream<Test> resultStream = getDataStreamFromTable(tableEnv, sqlResult);
+        DataStream<Test> resultStream = facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
 
         resultStream.print();
 
         // send datastream data to elasticsearch
-        sendDataStreamToElasticSearch(resultStream);
+        facp.sendDataStreamToElasticSearch(resultStream);
 
-        env.execute();
+        facp.env.execute();
 
     }
 
-    public static DataStream<Test> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
+    public DataStream<Test> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
         return tableEnv
                 .toRetractStream(sqlResult, Row.class)
                 .filter(t -> t.f0)
@@ -67,21 +67,15 @@ public class FlinkConsumerProducer {
                 .returns(Test.class);
     }
 
-    public static DataStream<BlocksTransactions> getDataStreamFromKafka(String arg, StreamExecutionEnvironment env) {
-        FlinkKafkaConsumer011<BlocksTransactions> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(arg, new BlocksTransactionsSchema(), KafkaUtils.getProperties());
-        flinkBlocksTransactionsConsumer.setStartFromEarliest();
 
-        return env.addSource(flinkBlocksTransactionsConsumer);
-    }
-
-    public static Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv) {
+    public Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv) {
         return tableEnv.sqlQuery(
                 "SELECT block_number, count(tx_hash) " +
                         "FROM blocksTransactionsTable " +
                         "GROUP BY block_number");
     }
 
-    public static void sendDataStreamToElasticSearch(DataStream<Test> resultStream) {
+    public void sendDataStreamToElasticSearch(DataStream<Test> resultStream) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
         httpHosts.add(new HttpHost("10.2.3.1", 9200, "http"));
