@@ -2,23 +2,24 @@ package com.finaxys.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Test {
+public class NumberOfTransactionsByBlocks {
 
     public String block_number;
     public long nbTransactions;
 
-    public Test(){ }
+    public NumberOfTransactionsByBlocks() {
+    }
 
-    public Test(String block_number, long nbTransactions) {
+    public NumberOfTransactionsByBlocks(String block_number, long nbTransactions) {
         this.block_number = block_number;
         this.nbTransactions = nbTransactions;
     }
 
-    public static Test fromString(String test) {
+    public static NumberOfTransactionsByBlocks fromString(String test) {
         ObjectMapper mapper = new ObjectMapper();
-        Test t = null;
+        NumberOfTransactionsByBlocks t = null;
         try {
-            t = mapper.readValue(test, Test.class);
+            t = mapper.readValue(test, NumberOfTransactionsByBlocks.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,7 +28,7 @@ public class Test {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Test{");
+        final StringBuilder sb = new StringBuilder("NumberOfTransactionsByBlocks{");
         sb.append("block_number='").append(block_number).append('\'');
         sb.append(", nbTransactions=").append(nbTransactions);
         sb.append('}');

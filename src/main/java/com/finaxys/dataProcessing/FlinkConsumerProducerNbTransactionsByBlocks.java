@@ -1,20 +1,15 @@
 package com.finaxys.dataProcessing;
 
 import com.finaxys.model.BlocksTransactions;
-import com.finaxys.model.Test;
-import com.finaxys.schema.BlocksTransactionsSchema;
-import com.finaxys.schema.TestSchema;
-import com.finaxys.utils.KafkaUtils;
+import com.finaxys.model.NumberOfTransactionsByBlocks;
+import com.finaxys.schema.NumberOfTransactionsByBlocksSchema;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.elasticsearch.ElasticsearchSinkFunction;
 import org.apache.flink.streaming.connectors.elasticsearch.RequestIndexer;
 import org.apache.flink.streaming.connectors.elasticsearch6.ElasticsearchSink;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 import org.apache.flink.table.api.Table;
-import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 import org.apache.http.HttpHost;
@@ -43,7 +38,7 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
         Table sqlResult = facp.getNumberOfTransactionsByBlock(facp.tableEnv);
 
         // Convert Table to DataStream
-        DataStream<Test> resultStream = facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
+        DataStream<NumberOfTransactionsByBlocks> resultStream = facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
 
         resultStream.print();
 
@@ -54,7 +49,7 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
 
     }
 
-    public DataStream<Test> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
+    public DataStream<NumberOfTransactionsByBlocks> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
         return tableEnv
                 .toRetractStream(sqlResult, Row.class)
                 .filter(t -> t.f0)
@@ -62,9 +57,9 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
                     Row r = t.f1;
                     String block_hash = r.getField(0).toString();
                     long nbTransactions = Long.valueOf(r.getField(1).toString());
-                    return new Test(block_hash, nbTransactions);
+                    return new NumberOfTransactionsByBlocks(block_hash, nbTransactions);
                 })
-                .returns(Test.class);
+                .returns(NumberOfTransactionsByBlocks.class);
     }
 
 
@@ -75,27 +70,27 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
                         "GROUP BY block_number");
     }
 
-    public void sendDataStreamToElasticSearch(DataStream<Test> resultStream) {
+    public void sendDataStreamToElasticSearch(DataStream<NumberOfTransactionsByBlocks> resultStream) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
         httpHosts.add(new HttpHost("10.2.3.1", 9200, "http"));
 
-        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTopic", new TestSchema()));
+        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTopic", new NumberOfTransactionsByBlocksSchema()));
 
-        ElasticsearchSink.Builder<Test> esSinkBuilder = new ElasticsearchSink.Builder<>(
-                httpHosts, new NumberOfTransactionsByBlocks());
+        ElasticsearchSink.Builder<NumberOfTransactionsByBlocks> esSinkBuilder = new ElasticsearchSink.Builder<>(
+                httpHosts, new NumberOfTransactionsByBlocksToElastic());
 
         resultStream.addSink(esSinkBuilder.build());
     }
 
-    public static class NumberOfTransactionsByBlocks implements ElasticsearchSinkFunction<Test> {
+    public static class NumberOfTransactionsByBlocksToElastic implements ElasticsearchSinkFunction<NumberOfTransactionsByBlocks> {
 
-        public void process(Test element, RuntimeContext ctx, RequestIndexer indexer) {
+        public void process(NumberOfTransactionsByBlocks element, RuntimeContext ctx, RequestIndexer indexer) {
             indexer.add(createIndexRequest(element));
 
         }
 
-        public IndexRequest createIndexRequest(Test element) {
+        public IndexRequest createIndexRequest(NumberOfTransactionsByBlocks element) {
             Map<String, String> json = new HashMap<>();
             json.put("block_number", element.block_number);
             json.put("numberOfTransactions", String.valueOf(element.nbTransactions));

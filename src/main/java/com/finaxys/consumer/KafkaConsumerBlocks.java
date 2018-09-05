@@ -8,10 +8,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.util.Collections;
 import java.util.Properties;
 
-/**
- * Class not used anymore, see Flink Consumer
- */
-@Deprecated
+
 public class KafkaConsumerBlocks {
 
     public static void main(String[] args) {

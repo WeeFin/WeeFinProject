@@ -1,7 +1,7 @@
 package com.finaxys.dataProcessing;
 
 import com.finaxys.model.BlocksTransactions;
-import com.finaxys.model.Test;
+import com.finaxys.model.NumberOfTransactionsByBlocks;
 import com.finaxys.schema.BlocksTransactionsSchema;
 import com.finaxys.utils.KafkaUtils;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,16 +16,17 @@ public abstract class FlinkAbtractConsumerProducer {
     public StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     public StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
 
-    public DataStream<BlocksTransactions> getDataStreamFromKafka(String arg, StreamExecutionEnvironment env) {
-        FlinkKafkaConsumer011<BlocksTransactions> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(arg, new BlocksTransactionsSchema(), KafkaUtils.getProperties());
+
+    public DataStream<BlocksTransactions> getDataStreamFromKafka(String topicName, StreamExecutionEnvironment env) {
+        FlinkKafkaConsumer011<BlocksTransactions> flinkBlocksTransactionsConsumer = new FlinkKafkaConsumer011<>(topicName, new BlocksTransactionsSchema(), KafkaUtils.getProperties());
         flinkBlocksTransactionsConsumer.setStartFromEarliest();
 
         return env.addSource(flinkBlocksTransactionsConsumer);
     }
 
-    public abstract DataStream<Test> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult);
+    public abstract DataStream<NumberOfTransactionsByBlocks> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult);
 
     public abstract Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv);
 
-    public abstract void sendDataStreamToElasticSearch(DataStream<Test> resultStream);
+    public abstract void sendDataStreamToElasticSearch(DataStream<NumberOfTransactionsByBlocks> resultStream);
 }

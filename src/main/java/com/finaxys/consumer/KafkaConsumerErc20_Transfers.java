@@ -8,7 +8,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.util.Collections;
 import java.util.Properties;
 
-@Deprecated
+
 public class KafkaConsumerErc20_Transfers {
 
     public static void main(String[] args) {
