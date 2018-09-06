@@ -1,7 +1,6 @@
 package com.finaxys.dataProcessing;
 
 import com.finaxys.model.BlocksTransactions;
-import com.finaxys.model.NumberOfTransactionsByBlocks;
 import com.finaxys.schema.BlocksTransactionsSchema;
 import com.finaxys.utils.KafkaUtils;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -11,7 +10,7 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 
-public abstract class FlinkAbtractConsumerProducer {
+public abstract class FlinkAbtractConsumerProducer<T> {
 
     public StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     public StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
@@ -24,9 +23,9 @@ public abstract class FlinkAbtractConsumerProducer {
         return env.addSource(flinkBlocksTransactionsConsumer);
     }
 
-    public abstract DataStream<NumberOfTransactionsByBlocks> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult);
+    public abstract T getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult);
 
     public abstract Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv);
 
-    public abstract void sendDataStreamToElasticSearch(DataStream<NumberOfTransactionsByBlocks> resultStream);
+    public abstract void sendDataStreamToElasticSearch(T resultStream);
 }

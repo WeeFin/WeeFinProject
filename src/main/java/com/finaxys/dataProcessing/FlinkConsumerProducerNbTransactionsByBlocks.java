@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractConsumerProducer {
+public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractConsumerProducer<DataStream<NumberOfTransactionsByBlocks>> {
 
 
     public static void main(String[] args) throws Exception {
@@ -38,7 +38,7 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
         Table sqlResult = facp.getNumberOfTransactionsByBlock(facp.tableEnv);
 
         // Convert Table to DataStream
-        DataStream<NumberOfTransactionsByBlocks> resultStream = facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
+        DataStream<NumberOfTransactionsByBlocks> resultStream = (DataStream<NumberOfTransactionsByBlocks>) facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
 
         resultStream.print();
 
