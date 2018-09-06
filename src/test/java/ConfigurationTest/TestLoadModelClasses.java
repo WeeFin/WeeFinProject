@@ -1,25 +1,37 @@
 package ConfigurationTest;
 
 import com.finaxys.loader.LoadModel;
+import com.finaxys.model.BlocksTransactions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 class TestLoadModelClasses {
 
+    public static LoadModel lc;
+
     @BeforeAll
-    void setUp() throws Exception {
-        LoadModel lc = new LoadModel("/home/finaxys/blocks.csv");
+    static void setUp() throws Exception {
+        lc = new LoadModel("testFiles/blocksTransactionsTest.csv");
     }
 
     @AfterAll
-    void tearDown() throws Exception {
+    static void tearDown() throws Exception {
+        lc = null;
     }
 
     @Test
-    void newLoaderNoFile() throws Exception {
+    void newLoaderNoFileProvided() {
         Assertions.assertThrows(NullPointerException.class, () -> new LoadModel(null));
+    }
+
+    @Test
+    void testGetListOfBlocksTransactionsFromCSV() {
+        List<BlocksTransactions> blocks = lc.getListOfBlocksTransactionsFromCSV();
+        blocks.forEach(System.out::println);
     }
 
 }

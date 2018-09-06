@@ -21,7 +21,10 @@ public class LoadModel {
      * @param csvFilesPath : Path in which there are your CSV files
      */
     public LoadModel(String csvFilesPath) {
-        this.csvFilesPath = csvFilesPath;
+        if (csvFilesPath == null)
+            throw new NullPointerException();
+        else
+            this.csvFilesPath = csvFilesPath;
     }
 
     /**
