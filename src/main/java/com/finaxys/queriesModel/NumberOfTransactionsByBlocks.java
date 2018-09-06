@@ -1,7 +1,10 @@
-package com.finaxys.model;
+package com.finaxys.queriesModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This class is used to store the result of the query : Get the number of transactions by block
+ */
 public class NumberOfTransactionsByBlocks {
 
     public String block_number;
@@ -10,16 +13,24 @@ public class NumberOfTransactionsByBlocks {
     public NumberOfTransactionsByBlocks() {
     }
 
+    /**
+     * @param block_number
+     * @param nbTransactions : corresponding number of transactions for the block
+     */
     public NumberOfTransactionsByBlocks(String block_number, long nbTransactions) {
         this.block_number = block_number;
         this.nbTransactions = nbTransactions;
     }
 
-    public static NumberOfTransactionsByBlocks fromString(String test) {
+    /**
+     * @param nbTransactionsByBlocks in JSON format
+     * @return an instance of NumberOfTransactionsByBlocks
+     */
+    public static NumberOfTransactionsByBlocks fromString(String nbTransactionsByBlocks) {
         ObjectMapper mapper = new ObjectMapper();
         NumberOfTransactionsByBlocks t = null;
         try {
-            t = mapper.readValue(test, NumberOfTransactionsByBlocks.class);
+            t = mapper.readValue(nbTransactionsByBlocks, NumberOfTransactionsByBlocks.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

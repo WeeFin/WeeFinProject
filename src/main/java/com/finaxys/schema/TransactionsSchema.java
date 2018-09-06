@@ -1,16 +1,18 @@
 package com.finaxys.schema;
 
-import java.io.IOException;
-
+import com.finaxys.model.Transactions;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
-import com.finaxys.model.Transactions;
+import java.io.IOException;
 
+/**
+ * Serialization schema for Transactions class
+ */
 public class TransactionsSchema implements DeserializationSchema<Transactions>, SerializationSchema<Transactions> {
 
-    
+
     private static final long serialVersionUID = 6680074076962797876L;
 
     @Override

@@ -7,6 +7,9 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 
 import java.io.IOException;
 
+/**
+ * Serialization schema for BlocksTransactions class
+ */
 public class BlocksTransactionsSchema implements DeserializationSchema<BlocksTransactions>, SerializationSchema<BlocksTransactions> {
 
     private static final long serialVersionUID = 6444283837183255764L;

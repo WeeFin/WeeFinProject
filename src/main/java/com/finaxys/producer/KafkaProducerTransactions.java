@@ -1,17 +1,19 @@
 package com.finaxys.producer;
 
+import com.finaxys.loader.LoadModel;
+import com.finaxys.model.Transactions;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-
-import com.finaxys.loader.LoadModel;
-import com.finaxys.model.Transactions;
-
+/**
+ * This class is used to send Transactions informations on a Kafka Topic given in argument
+ */
 public class KafkaProducerTransactions {
 
     public static void main(String[] args) throws Exception {
@@ -38,15 +40,9 @@ public class KafkaProducerTransactions {
         Files.walk(Paths.get(args[1]))
                 .filter(Files::isRegularFile)
                 .forEach(x -> {
-
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
-
                     List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
-                    System.out.println(transactions.size());
-                    transactions.forEach(System.out::println);
-
                     try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
-
                         for (Transactions t : transactions) {
                             producer.send(new ProducerRecord<>(topicName, t));
                             System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
@@ -55,7 +51,6 @@ public class KafkaProducerTransactions {
                         e.printStackTrace();
                     }
                 });
-
     }
 
 }

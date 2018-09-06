@@ -8,7 +8,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.util.Collections;
 import java.util.Properties;
 
-
+/**
+ * This class is used for retrieving Blocks informations from a Kafka Topic
+ */
 public class KafkaConsumerBlocks {
 
     public static void main(String[] args) {

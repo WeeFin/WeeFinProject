@@ -6,6 +6,10 @@ import org.apache.kafka.common.serialization.Serializer;
 
 import java.util.Map;
 
+/**
+ * Each serializer model class is used for Kafka Broker. Kafka stores and transmit the bytes got by serialization process
+ * in it's queue
+ */
 public class BlocksTransactionsSerializer implements Serializer<BlocksTransactions> {
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {

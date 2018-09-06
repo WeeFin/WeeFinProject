@@ -1,29 +1,31 @@
 package com.finaxys.loader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.finaxys.model.Blocks;
 import com.finaxys.model.BlocksTransactions;
 import com.finaxys.model.Erc20_Transfers;
 import com.finaxys.model.Transactions;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * This class is used for Loading Model classes like Blocks or Transactions on our application
+ */
 public class LoadModel {
 
     private String csvFilesPath;
 
+    /**
+     * @param csvFilesPath : Path in which there are your CSV files
+     */
     public LoadModel(String csvFilesPath) {
         this.csvFilesPath = csvFilesPath;
     }
 
     /**
-     * Load Blocks classes from CSV data
+     * @return List of blocks from CSV files
      */
     public List<Blocks> getListOfBlocksFromCSV() {
 
@@ -56,7 +58,7 @@ public class LoadModel {
     }
 
     /**
-     * Load Transactions classes from CSV data
+     * @return List of transactions from CSV files
      */
     public List<Transactions> getListOfTransactionsFromCSV() {
 
@@ -86,8 +88,8 @@ public class LoadModel {
 
     }
 
-    /*
-     * Load ERC20 classes from CSV data
+    /**
+     * @return List of ERC20 transfers from CSV Files
      */
     public List<Erc20_Transfers> getListOfErc20_TransfersFromCSV() {
 
@@ -115,6 +117,9 @@ public class LoadModel {
 
     }
 
+    /**
+     * @return List of transactions and blocks from joined CSV Files
+     */
     public List<BlocksTransactions> getListOfBlocksTransactionsFromCSV() {
 
         List<BlocksTransactions> inputListBlocksTransactions = new ArrayList<>();
@@ -132,7 +137,7 @@ public class LoadModel {
                                                 splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
                                                 Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
                                                 Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
-                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]),splittedValues[17], Long.valueOf(splittedValues[18]),
+                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]), splittedValues[17], Long.valueOf(splittedValues[18]),
                                                 Long.valueOf(splittedValues[19]), Long.valueOf(splittedValues[20]),
                                                 splittedValues[21], splittedValues[22], Double.valueOf(splittedValues[23]),
                                                 Long.valueOf(splittedValues[24]), Long.valueOf(splittedValues[25]), splittedValues[26]);

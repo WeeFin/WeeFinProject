@@ -6,6 +6,9 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 import java.util.Map;
 
+/**
+ * Each deserializer model class is used to retrieve model class objects from JSON information in the Kafka Topic
+ */
 public class BlocksTransactionsDeserializer implements Deserializer<BlocksTransactions> {
 
     @Override

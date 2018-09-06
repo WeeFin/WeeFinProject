@@ -1,12 +1,15 @@
 package com.finaxys.serialization;
 
-import java.util.Map;
-
-import org.apache.kafka.common.serialization.Serializer;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finaxys.model.Erc20_Transfers;
+import org.apache.kafka.common.serialization.Serializer;
 
+import java.util.Map;
+
+/**
+ * Each serializer model class is used for Kafka Broker. Kafka stores and transmit the bytes got by serialization process
+ * in it's queue
+ */
 public class Erc20_TransfersSerializer implements Serializer<Erc20_Transfers> {
 
     @Override

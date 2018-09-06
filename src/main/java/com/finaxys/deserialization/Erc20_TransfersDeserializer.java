@@ -1,12 +1,14 @@
 package com.finaxys.deserialization;
 
-import java.util.Map;
-
-import org.apache.kafka.common.serialization.Deserializer;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finaxys.model.Erc20_Transfers;
+import org.apache.kafka.common.serialization.Deserializer;
 
+import java.util.Map;
+
+/**
+ * Each deserializer model class is used to retrieve model class objects from JSON information in the Kafka Topic
+ */
 public class Erc20_TransfersDeserializer implements Deserializer<Erc20_Transfers> {
 
     @Override

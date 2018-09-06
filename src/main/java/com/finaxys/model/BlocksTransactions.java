@@ -2,8 +2,6 @@ package com.finaxys.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.StringJoiner;
-
 public class BlocksTransactions {
 
     private long block_number;
@@ -284,7 +282,10 @@ public class BlocksTransactions {
         this.tx_input = tx_input;
     }
 
-
+    /**
+     * @param blocksTransactions in JSON format
+     * @return an instance of a BlocksTransactions
+     */
     public static BlocksTransactions fromString(String blocksTransactions) {
         ObjectMapper mapper = new ObjectMapper();
         BlocksTransactions bt = null;

@@ -1,7 +1,7 @@
 package com.finaxys.dataProcessing;
 
 import com.finaxys.model.BlocksTransactions;
-import com.finaxys.model.NumberOfTransactionsByBlocks;
+import com.finaxys.queriesModel.NumberOfTransactionsByBlocks;
 import com.finaxys.schema.NumberOfTransactionsByBlocksSchema;
 import org.apache.flink.api.common.functions.RuntimeContext;
 import org.apache.flink.streaming.api.datastream.DataStream;

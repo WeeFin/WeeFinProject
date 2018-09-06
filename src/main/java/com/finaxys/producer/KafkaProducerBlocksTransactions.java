@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * This class is used to send BlocksTransactions informations on a Kafka Topic given in argument
+ */
 public class KafkaProducerBlocksTransactions {
     public static void main(String[] args) throws Exception {
 
@@ -36,18 +39,13 @@ public class KafkaProducerBlocksTransactions {
         Files.walk(Paths.get(args[1]))
                 .filter(Files::isRegularFile)
                 .forEach(x -> {
-
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
-
                     List<BlocksTransactions> blocksTransactions = loadCSVFiles.getListOfBlocksTransactionsFromCSV();
-
                     try (Producer<String, BlocksTransactions> producer = new KafkaProducer<>(props)) {
-
                         for (BlocksTransactions b : blocksTransactions) {
                             producer.send(new ProducerRecord<>(topicName, b));
                             System.out.println("Blocks " + b.getBlock_hash() + " sent !");
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -8,7 +8,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.util.Collections;
 import java.util.Properties;
 
-
+/**
+ * This class is used for retrieving Erc20_Transfers informations from a Kafka Topic
+ */
 public class KafkaConsumerErc20_Transfers {
 
     public static void main(String[] args) {

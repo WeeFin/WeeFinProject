@@ -1,12 +1,14 @@
 package com.finaxys.deserialization;
 
-import java.util.Map;
-
-import org.apache.kafka.common.serialization.Deserializer;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finaxys.model.Transactions;
+import org.apache.kafka.common.serialization.Deserializer;
 
+import java.util.Map;
+
+/**
+ * Each deserializer model class is used to retrieve model class objects from JSON information in the Kafka Topic
+ */
 public class TransactionsDeserializer implements Deserializer<Transactions> {
 
     @Override

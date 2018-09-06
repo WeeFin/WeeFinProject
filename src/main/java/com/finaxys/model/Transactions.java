@@ -124,6 +124,10 @@ public class Transactions {
         this.tx_input = tx_input;
     }
 
+    /**
+     * @param transactions in JSON format
+     * @return an instance of a Transaction
+     */
     public static Transactions fromString(String transactions) {
         ObjectMapper mapper = new ObjectMapper();
         Transactions t = null;
@@ -134,5 +138,4 @@ public class Transactions {
         }
         return t;
     }
-
 }

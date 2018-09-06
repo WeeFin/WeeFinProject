@@ -1,17 +1,19 @@
 package com.finaxys.producer;
 
+import com.finaxys.loader.LoadModel;
+import com.finaxys.model.Blocks;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-
-import com.finaxys.loader.LoadModel;
-import com.finaxys.model.Blocks;
-
+/**
+ * This class is used to send Blocks informations on a Kafka Topic given in argument
+ */
 public class KafkaProducerBlocks {
 
     public static void main(String[] args) throws Exception {
@@ -34,27 +36,19 @@ public class KafkaProducerBlocks {
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "com.finaxys.serialization.BlocksSerializer");
 
-
         Files.walk(Paths.get(args[1]))
                 .filter(Files::isRegularFile)
                 .forEach(x -> {
-
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
-
                     List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
-
                     try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
-
                         for (Blocks b : blocks) {
                             producer.send(new ProducerRecord<>(topicName, b));
                             System.out.println("Blocks " + b.getBlock_hash() + " sent !");
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-
     }
-
 }

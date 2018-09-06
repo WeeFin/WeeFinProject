@@ -1,13 +1,15 @@
 package com.finaxys.schema;
 
-import java.io.IOException;
-
+import com.finaxys.model.Erc20_Transfers;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
-import com.finaxys.model.Erc20_Transfers;
+import java.io.IOException;
 
+/**
+ * Serialization schema for Erc20_Transfers class
+ */
 public class Erc20_TransfersSchema implements DeserializationSchema<Erc20_Transfers>, SerializationSchema<Erc20_Transfers> {
 
     /**

@@ -83,8 +83,12 @@ public class Erc20_Transfers {
     public void setErc20_block_number(long erc20_block_number) {
         this.erc20_block_number = erc20_block_number;
     }
-	
 
+
+    /**
+     * @param erc20_transfers in JSON format
+     * @return an instance of a Erc20_Transfers
+     */
     public static Erc20_Transfers fromString(String erc20_transfers) {
         ObjectMapper mapper = new ObjectMapper();
         Erc20_Transfers eT = null;

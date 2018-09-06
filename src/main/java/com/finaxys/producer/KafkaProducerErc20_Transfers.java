@@ -1,17 +1,19 @@
 package com.finaxys.producer;
 
+import com.finaxys.loader.LoadModel;
+import com.finaxys.model.Erc20_Transfers;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-
-import com.finaxys.loader.LoadModel;
-import com.finaxys.model.Erc20_Transfers;
-
+/**
+ * This class is used to send Erc20_Transfers informations on a Kafka Topic given in argument
+ */
 public class KafkaProducerErc20_Transfers {
 
     public static void main(String[] args) throws Exception {
@@ -37,22 +39,17 @@ public class KafkaProducerErc20_Transfers {
         Files.walk(Paths.get(args[1]))
                 .filter(Files::isRegularFile)
                 .forEach(x -> {
-
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
-
                     List<Erc20_Transfers> erc20_transfers = loadCSVFiles.getListOfErc20_TransfersFromCSV();
-
                     try (Producer<String, Erc20_Transfers> producer = new KafkaProducer<>(props)) {
-
                         for (Erc20_Transfers et : erc20_transfers) {
-                            producer.send(new ProducerRecord<String, Erc20_Transfers>(topicName, et));
+                            producer.send(new ProducerRecord<>(topicName, et));
                             System.out.println("Erc20_Transfers " + et.getErc20_tx_hash() + " sent !");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-
     }
 
 
