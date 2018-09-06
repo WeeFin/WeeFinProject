@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractConsumerProducer<DataStream<NumberOfTransactionsByBlocks>> {
+public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractConsumerProducer<NumberOfTransactionsByBlocks> {
 
 
     public static void main(String[] args) throws Exception {
 
-        FlinkAbtractConsumerProducer facp = new FlinkConsumerProducerNbTransactionsByBlocks();
+        FlinkConsumerProducerNbTransactionsByBlocks facp = new FlinkConsumerProducerNbTransactionsByBlocks();
 
         // get blockstransactions data from Kafka and put it in a DataStream
         DataStream<BlocksTransactions> blocksTransactions = facp.getDataStreamFromKafka(args[0], facp.env);
@@ -49,6 +49,11 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
 
     }
 
+    /**
+     * @param tableEnv
+     * @param sqlResult
+     * @return datastream of numberoftransactionsbyblocks
+     */
     public DataStream<NumberOfTransactionsByBlocks> getDataStreamFromTable(StreamTableEnvironment tableEnv, Table sqlResult) {
         return tableEnv
                 .toRetractStream(sqlResult, Row.class)
@@ -63,6 +68,11 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
     }
 
 
+    /**
+     *
+     * @param tableEnv
+     * @return return a Table which contains our Flink-SQL query
+     */
     public Table getNumberOfTransactionsByBlock(StreamTableEnvironment tableEnv) {
         return tableEnv.sqlQuery(
                 "SELECT block_number, count(tx_hash) " +
@@ -70,6 +80,10 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
                         "GROUP BY block_number");
     }
 
+    /**
+     * Send DataStream of numberoftransactionsbyblocks to elasticsearch
+     * @param resultStream
+     */
     public void sendDataStreamToElasticSearch(DataStream<NumberOfTransactionsByBlocks> resultStream) {
         List<HttpHost> httpHosts = new ArrayList<>();
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
@@ -83,6 +97,9 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
         resultStream.addSink(esSinkBuilder.build());
     }
 
+    /**
+     * Inner class which deals with the Flink-Connector Elasticsearch
+     */
     public static class NumberOfTransactionsByBlocksToElastic implements ElasticsearchSinkFunction<NumberOfTransactionsByBlocks> {
 
         public void process(NumberOfTransactionsByBlocks element, RuntimeContext ctx, RequestIndexer indexer) {
