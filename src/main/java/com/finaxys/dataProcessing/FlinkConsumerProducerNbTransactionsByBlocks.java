@@ -38,7 +38,7 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
         Table sqlResult = facp.getNumberOfTransactionsByBlock(facp.tableEnv);
 
         // Convert Table to DataStream
-        DataStream<NumberOfTransactionsByBlocks> resultStream = (DataStream<NumberOfTransactionsByBlocks>) facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
+        DataStream<NumberOfTransactionsByBlocks> resultStream = facp.getDataStreamFromTable(facp.tableEnv, sqlResult);
 
         resultStream.print();
 
@@ -69,7 +69,6 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
 
 
     /**
-     *
      * @param tableEnv
      * @return return a Table which contains our Flink-SQL query
      */
@@ -89,12 +88,19 @@ public class FlinkConsumerProducerNbTransactionsByBlocks extends FlinkAbtractCon
         httpHosts.add(new HttpHost("127.0.0.1", 9200, "http"));
         httpHosts.add(new HttpHost("10.2.3.1", 9200, "http"));
 
-        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTopic", new NumberOfTransactionsByBlocksSchema()));
-
         ElasticsearchSink.Builder<NumberOfTransactionsByBlocks> esSinkBuilder = new ElasticsearchSink.Builder<>(
                 httpHosts, new NumberOfTransactionsByBlocksToElastic());
 
         resultStream.addSink(esSinkBuilder.build());
+    }
+
+    /**
+     * Send the data got by the result of the query to kafka topic
+     *
+     * @param resultStream DataStream containing the result of the query
+     */
+    public void sendResultOfQueryToKafka(DataStream<NumberOfTransactionsByBlocks> resultStream) {
+        resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTopic", new NumberOfTransactionsByBlocksSchema()));
     }
 
     /**
