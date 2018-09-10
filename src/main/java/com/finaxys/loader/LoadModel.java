@@ -140,7 +140,8 @@ public class LoadModel {
                                                 splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
                                                 Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
                                                 Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
-                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]), splittedValues[17], Long.valueOf(splittedValues[18]),
+                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]),
+                                                splittedValues[17], Long.valueOf(splittedValues[18]),
                                                 Long.valueOf(splittedValues[19]), Long.valueOf(splittedValues[20]),
                                                 splittedValues[21], splittedValues[22], Double.valueOf(splittedValues[23]),
                                                 Long.valueOf(splittedValues[24]), Long.valueOf(splittedValues[25]), splittedValues[26]);
@@ -172,6 +173,4 @@ public class LoadModel {
         }
 
     }
-
-
 }

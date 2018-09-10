@@ -8,15 +8,41 @@ import org.apache.flink.table.api.Types;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.types.Row;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class FlinkDummyConsumerBatch {
 
-    public static void main(String[] args) throws Exception {
+    public final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+    public final BatchTableEnvironment tableEnv = BatchTableEnvironment.getTableEnvironment(env);
+    public static CsvTableSource csvTableSource;
 
-        final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
-        final BatchTableEnvironment tableEnv = BatchTableEnvironment.getTableEnvironment(env);
+    @BeforeAll
+    public static void init() {
+        csvTableSource = getCsvTableSource();
+    }
 
-        CsvTableSource csvTableSource = CsvTableSource.builder()
+    /**
+     * Test method for simple SQL query in batch
+     *
+     * @throws Exception
+     */
+    @Test
+    public void test() throws Exception {
+
+        tableEnv.registerTableSource("blocksTransactionsTable", csvTableSource);
+        Table sqlResult = tableEnv.sqlQuery(
+                "SELECT avg(block_size),block_timestamp FROM blocksTransactionsTable group by block_timestamp");
+        DataSet<Row> data = tableEnv.toDataSet(sqlResult, Row.class);
+        data.print();
+        // env.execute();
+    }
+
+    /**
+     * @return csv table source
+     */
+    public static CsvTableSource getCsvTableSource() {
+        return CsvTableSource.builder()
                 .path("/home/finaxys/ethereum-etl/output/test/")
                 .ignoreFirstLine()
                 .fieldDelimiter(",")
@@ -35,7 +61,7 @@ public class FlinkDummyConsumerBatch {
                 .field("block_extra_data", Types.STRING())
                 .field("block_gas_limit", Types.LONG())
                 .field("block_gas_used", Types.LONG())
-                .field("block_timestamp", Types.LONG())
+                .field("block_timestamp", Types.SQL_TIMESTAMP())
                 .field("block_transaction_count", Types.LONG())
                 .field("tx_hash", Types.STRING())
                 .field("tx_nonce", Types.LONG())
@@ -48,17 +74,5 @@ public class FlinkDummyConsumerBatch {
                 .field("tx_gas_price", Types.LONG())
                 .field("tx_input", Types.STRING())
                 .build();
-
-        tableEnv.registerTableSource("blocksTransactionsTable", csvTableSource);
-
-        Table sqlResult = tableEnv.sqlQuery(
-                "SELECT CAST(CAST(cast(block_timestamp as bigint) as decimal(30,0))/1000 AS timestamp) FROM blocksTransactionsTable");
-
-        DataSet<Row> data = tableEnv.toDataSet(sqlResult, Row.class);
-
-        data.print();
-
-        // env.execute();
-
     }
 }

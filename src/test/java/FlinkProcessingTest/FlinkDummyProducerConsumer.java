@@ -29,6 +29,9 @@ public class FlinkDummyProducerConsumer {
         tableEnv = TableEnvironment.getTableEnvironment(env);
     }
 
+    /**
+     * @return the datastream of blocks from a Kafka Topic
+     */
     DataStream<Blocks> testKafkaConsumer() {
 
         Properties props;
@@ -45,6 +48,11 @@ public class FlinkDummyProducerConsumer {
         return blocksTransactions;
     }
 
+    /**
+     * Basic SQL query
+     *
+     * @return a table containing the sql result
+     */
     @Test
     Table testSQLQuery() {
 
@@ -75,6 +83,9 @@ public class FlinkDummyProducerConsumer {
         return sqlResult;
     }
 
+    /**
+     * Kafka Producer, convert Table to Datastream in order to produce the result on a Kafka Topic
+     */
     @Test
     void testKafkaProducer() {
 
@@ -126,6 +137,11 @@ public class FlinkDummyProducerConsumer {
         resultStream.addSink(new FlinkKafkaProducer011<>("localhost:9092", "TargetTestTopic", new BlocksSchema()));
     }
 
+    /**
+     * Execute the Job
+     *
+     * @throws Exception
+     */
     @AfterAll
     public static void init() throws Exception {
         env.execute();

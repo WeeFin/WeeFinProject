@@ -22,9 +22,13 @@ public class FlinkTestJoin {
         tableEnv = TableEnvironment.getTableEnvironment(env);
     }
 
+    /**
+     * Example of join with simple elements
+     */
     @Test
     void test() {
 
+        // Creation of datastream containing a tuple
         DataStream<Tuple2<Integer, String>> test = env.fromElements(
                 new Tuple2<>(1, "Bonjour"),
                 new Tuple2<>(2, "World"));
