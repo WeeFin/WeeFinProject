@@ -61,7 +61,7 @@ public class FlinkDummyConsumerBatch {
                 .field("block_extra_data", Types.STRING())
                 .field("block_gas_limit", Types.LONG())
                 .field("block_gas_used", Types.LONG())
-                .field("block_timestamp", Types.SQL_TIMESTAMP())
+                .field("block_timestamp", Types.LONG())
                 .field("block_transaction_count", Types.LONG())
                 .field("tx_hash", Types.STRING())
                 .field("tx_nonce", Types.LONG())
