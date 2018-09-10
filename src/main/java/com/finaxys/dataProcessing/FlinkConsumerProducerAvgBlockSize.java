@@ -59,7 +59,7 @@ public class FlinkConsumerProducerAvgBlockSize extends FlinkAbtractConsumerProdu
 
     public Table getAvgBlockSizeByDate(StreamTableEnvironment tableEnv) {
         return tableEnv.sqlQuery(
-                "SELECT avg(block_size),block_timestamp FROM blocksSizeTable group by block_timestamp");
+                "SELECT avg(block_size),year(cast(cast(block_timestamp as timestamp) as date)) FROM blocksSizeTable group by year(cast(cast(block_timestamp as timestamp) as date))");
     }
 
     @Override
@@ -82,9 +82,9 @@ public class FlinkConsumerProducerAvgBlockSize extends FlinkAbtractConsumerProdu
         }
 
         public IndexRequest createIndexRequest(AvgBlockSizeByDate element) {
-            Map<String, String> json = new HashMap<>();
-            json.put("avgBlockSize", String.valueOf(element.avgBlockSize));
-            json.put("numberOfTransactions", element.dateTransactions);
+            Map<String, Long> json = new HashMap<>();
+            json.put("avgBlockSize", Long.valueOf(element.avgBlockSize));
+            json.put("blocksTimestamp", Long.valueOf(element.dateTransactions));
 
             return Requests.indexRequest()
                     .index("avg-block-size-by-date")

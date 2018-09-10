@@ -6,6 +6,7 @@ import com.finaxys.model.Erc20_Transfers;
 import com.finaxys.model.Transactions;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -140,7 +141,7 @@ public class LoadModel {
                                                 splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
                                                 Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
                                                 Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
-                                                Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]),
+                                                new Timestamp(Long.valueOf(splittedValues[15]) * 1000), Long.valueOf(splittedValues[16]),
                                                 splittedValues[17], Long.valueOf(splittedValues[18]),
                                                 Long.valueOf(splittedValues[19]), Long.valueOf(splittedValues[20]),
                                                 splittedValues[21], splittedValues[22], Double.valueOf(splittedValues[23]),

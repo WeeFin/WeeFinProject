@@ -2,6 +2,8 @@ package com.finaxys.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.sql.Timestamp;
+
 public class BlocksTransactions {
 
     private long block_number;
@@ -19,7 +21,7 @@ public class BlocksTransactions {
     private String block_extra_data;
     private long block_gas_limit;
     private long block_gas_used;
-    private long block_timestamp;
+    private Timestamp block_timestamp;
     private long block_transaction_count;
     private String tx_hash;
     private long tx_nonce;
@@ -36,7 +38,7 @@ public class BlocksTransactions {
 
     }
 
-    public BlocksTransactions(long block_number, String block_hash, String block_parent_hash, String block_nonce, String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root, String block_miner, double block_difficulty, double block_total_difficulty, long block_size, String block_extra_data, long block_gas_limit, long block_gas_used, long block_timestamp, long block_transaction_count, String tx_hash, long tx_nonce, long tx_block_number, long tx_index, String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
+    public BlocksTransactions(long block_number, String block_hash, String block_parent_hash, String block_nonce, String block_sha3_uncles, String block_logs_bloom, String block_transactions_root, String block_state_root, String block_miner, double block_difficulty, double block_total_difficulty, long block_size, String block_extra_data, long block_gas_limit, long block_gas_used, Timestamp block_timestamp, long block_transaction_count, String tx_hash, long tx_nonce, long tx_block_number, long tx_index, String tx_from, String tx_to, double tx_value, long tx_gas, long tx_gas_price, String tx_input) {
         this.block_number = block_number;
         this.block_hash = block_hash;
         this.block_parent_hash = block_parent_hash;
@@ -186,11 +188,11 @@ public class BlocksTransactions {
         this.block_gas_used = block_gas_used;
     }
 
-    public long getBlock_timestamp() {
+    public Timestamp getBlock_timestamp() {
         return block_timestamp;
     }
 
-    public void setBlock_timestamp(long block_timestamp) {
+    public void setBlock_timestamp(Timestamp block_timestamp) {
         this.block_timestamp = block_timestamp;
     }
 
