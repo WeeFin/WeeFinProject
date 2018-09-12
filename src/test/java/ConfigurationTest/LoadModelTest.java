@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class TestLoadModelClasses {
+public class LoadModelTest {
 
     public static LoadModel lc;
 
