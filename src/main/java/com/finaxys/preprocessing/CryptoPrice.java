@@ -7,8 +7,17 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+/**
+ * This class is used to do requests from the API cryptocompare in order to get prices
+ * with timestamp
+ */
 public class CryptoPrice {
 
+    /**
+     * @param rd
+     * @return a string got by the characters in the stream rd
+     * @throws IOException
+     */
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
@@ -18,6 +27,12 @@ public class CryptoPrice {
         return sb.toString();
     }
 
+    /**
+     * @param url
+     * @return a JSON object containing the result of the url request
+     * @throws IOException
+     * @throws JSONException
+     */
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         JSONObject json = null;
         try (InputStream is = new URL(url).openStream()) {
@@ -30,6 +45,10 @@ public class CryptoPrice {
         return json;
     }
 
+    /**
+     * @param timestamp
+     * @return the price of the Ether cryptocurrency in USD at the specified timestamp
+     */
     public static double getUSDFromETHPriceAndTimestamp(String timestamp) {
         JSONObject json = null;
         System.err.println(timestamp);
