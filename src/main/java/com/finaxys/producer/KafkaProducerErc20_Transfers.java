@@ -42,10 +42,10 @@ public class KafkaProducerErc20_Transfers {
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
                     List<Erc20_Transfers> erc20_transfers = loadCSVFiles.getListOfErc20_TransfersFromCSV();
                     try (Producer<String, Erc20_Transfers> producer = new KafkaProducer<>(props)) {
-                        for (Erc20_Transfers et : erc20_transfers) {
+                        erc20_transfers.forEach((Erc20_Transfers et) -> {
                             producer.send(new ProducerRecord<>(topicName, et));
                             System.out.println("Erc20_Transfers " + et.getErc20_tx_hash() + " sent !");
-                        }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

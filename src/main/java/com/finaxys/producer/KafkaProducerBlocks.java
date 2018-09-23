@@ -42,10 +42,10 @@ public class KafkaProducerBlocks {
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
                     List<Blocks> blocks = loadCSVFiles.getListOfBlocksFromCSV();
                     try (Producer<String, Blocks> producer = new KafkaProducer<>(props)) {
-                        for (Blocks b : blocks) {
+                        blocks.forEach((Blocks b) -> {
                             producer.send(new ProducerRecord<>(topicName, b));
                             System.out.println("Blocks " + b.getBlock_hash() + " sent !");
-                        }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

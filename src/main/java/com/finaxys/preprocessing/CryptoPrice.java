@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 
 /**
  * This class is used to do requests from the API cryptocompare in order to get prices
- * with timestamp
+ * according to a timestamp
  */
 public class CryptoPrice {
 

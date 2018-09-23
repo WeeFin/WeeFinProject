@@ -43,10 +43,10 @@ public class KafkaProducerTransactions {
                     LoadModel loadCSVFiles = new LoadModel(x.toString());
                     List<Transactions> transactions = loadCSVFiles.getListOfTransactionsFromCSV();
                     try (Producer<String, Transactions> producer = new KafkaProducer<>(props)) {
-                        for (Transactions t : transactions) {
+                        transactions.forEach((Transactions t) -> {
                             producer.send(new ProducerRecord<>(topicName, t));
                             System.out.println("Transaction " + t.getTx_block_hash() + " sent !");
-                        }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
