@@ -42,7 +42,7 @@ public class CryptoPricesKraken {
     @Test
     public void configureTableSource() {
         csvTableSource = CsvTableSource.builder()
-                .path("/home/christophe/Kraken_ETHUSD_d.csv")
+                .path("/home/finaxys/Téléchargements/Kraken_ETHUSD_d.csv")
                 .ignoreFirstLine()
                 .fieldDelimiter(",")
                 .field("DateRegistered", Types.STRING())
@@ -89,7 +89,7 @@ public class CryptoPricesKraken {
             json.put("Date", element.f0);
             json.put("AvgPrice", element.f1);
 
-            // creattion of index in elasticsearch
+            // creation of index in elasticsearch
             IndexRequest r = Requests.indexRequest()
                     .index("avgpricebydate")
                     .type("avgprice")

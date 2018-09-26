@@ -1,4 +1,4 @@
-package com.finaxys.dataProcessing;
+package com.finaxys.dataprocessing;
 
 import com.finaxys.model.BlocksTransactions;
 import com.finaxys.queriesModel.NumberOfTransactionsByBlocks;
