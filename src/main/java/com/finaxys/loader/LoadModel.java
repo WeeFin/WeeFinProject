@@ -45,7 +45,7 @@ public class LoadModel {
                                         String[] splittedValues = line.split(",");
                                         return new Blocks(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
                                                 splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
-                                                splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
+                                                splittedValues[7], splittedValues[8], Long.valueOf(splittedValues[9]),
                                                 Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
                                                 Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
                                                 Long.valueOf(splittedValues[15]), Long.valueOf(splittedValues[16]));
@@ -138,7 +138,7 @@ public class LoadModel {
                                         String[] splittedValues = line.split(",");
                                         return new BlocksTransactions(Long.valueOf(splittedValues[0]), splittedValues[1], splittedValues[2],
                                                 splittedValues[3], splittedValues[4], splittedValues[5], splittedValues[6],
-                                                splittedValues[7], splittedValues[8], Double.valueOf(splittedValues[9]),
+                                                splittedValues[7], splittedValues[8], Long.valueOf(splittedValues[9]),
                                                 Double.valueOf(splittedValues[10]), Long.valueOf(splittedValues[11]), splittedValues[12],
                                                 Long.valueOf(splittedValues[13]), Long.valueOf(splittedValues[14]),
                                                 new Timestamp(Long.valueOf(splittedValues[15]) * 1000), Long.valueOf(splittedValues[16]),
